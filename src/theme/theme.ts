@@ -5,7 +5,7 @@ export const theme: ThemeType = {
     main: 'main100',
     main20: '#f0c295',
     main80: '#FFB060',
-    main100: '#F07900',
+    main100: '##FF8A00',
     main120: '#D16900',
 
     secondary: 'secondary100',
@@ -79,18 +79,6 @@ export const theme: ThemeType = {
 
     success: 'success100',
     success100: '#4ca86c',
-  },
-
-  fontFamily: {
-    normal: 'Poppins-Regular',
-    bold: 'Poppins-Bold',
-    300: 'Poppins-Light',
-    400: 'Poppins-Regular',
-    500: 'Poppins-Medium',
-    600: 'Poppins-SemiBold',
-    700: 'Poppins-Bold',
-    800: 'Poppins-ExtraBold',
-    900: 'Poppins-Black',
   },
 
   fontSize: {
