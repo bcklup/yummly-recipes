@@ -16,72 +16,72 @@ import { useUserRequests } from '../../hooks/user-hooks';
 import { routes } from '../../navigation/routes';
 import { Heading2, Heading3, Heading4, Paragraph } from '../../theme/Typography';
 import { globalSnackbarRef } from '../../utils/globalSnackbar';
-const logo = require('../../../assets/images/logo-withtext-horizontal.png');
+const logo = require('../../../assets/logo-text.png');
 
 export const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const { signIn, forgotPassword } = useAmplifyAuth();
-  const { doLoginNavigations } = useUserRequests();
-  const [showPassword, setShowPassword] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const queryClient = useQueryClient();
+  // const navigation = useNavigation();
+  // const { signIn, forgotPassword } = useAmplifyAuth();
+  // const { doLoginNavigations } = useUserRequests();
+  // const [showPassword, setShowPassword] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const queryClient = useQueryClient();
 
-  const schema = yup
-    .object({
-      email: yup.string().email('Invalid email').required('Email required'),
-      password: yup.string().required('Password required'),
-    })
-    .required();
+  // const schema = yup
+  //   .object({
+  //     email: yup.string().email('Invalid email').required('Email required'),
+  //     password: yup.string().required('Password required'),
+  //   })
+  //   .required();
 
-  const { handleSubmit, control } = useForm({
-    resolver: yupResolver(schema),
-    mode: 'onChange',
-  });
+  // const { handleSubmit, control } = useForm({
+  //   resolver: yupResolver(schema),
+  //   mode: 'onChange',
+  // });
 
-  const { isValid, errors } = useFormState({ control });
+  // const { isValid, errors } = useFormState({ control });
 
-  useEffect(() => {
-    queryClient.clear();
-  }, []);
+  // useEffect(() => {
+  //   queryClient.clear();
+  // }, []);
 
-  const handleForgot = useCallback(async () => {
-    navigation.dispatch(StackActions.replace(routes.auth.resetPasswordRequest));
-  }, []);
+  // const handleForgot = useCallback(async () => {
+  //   navigation.dispatch(StackActions.replace(routes.auth.resetPasswordRequest));
+  // }, []);
 
-  const hanldeSignIn = useCallback(
-    async (data: any) => {
-      setIsLoading(true);
-      Keyboard.dismiss();
-      if (!data || !isValid) return;
+  // const hanldeSignIn = useCallback(
+  //   async (data: any) => {
+  //     setIsLoading(true);
+  //     Keyboard.dismiss();
+  //     if (!data || !isValid) return;
 
-      const user = await signIn(data);
-      setIsLoading(false);
-      if (user.success) {
-        doLoginNavigations();
-      } else if (user.data.code === 'UserNotConfirmedException') {
-        navigation.navigate(routes.auth.twoFactorConfirm, {
-          email: data.email || '',
-          resume: true,
-          password: data.password || '',
-        });
-      } else {
-        globalSnackbarRef.current?.show(user.data.message || 'Login failed. Please try again');
-      }
-    },
-    [isValid],
-  );
+  //     const user = await signIn(data);
+  //     setIsLoading(false);
+  //     if (user.success) {
+  //       doLoginNavigations();
+  //     } else if (user.data.code === 'UserNotConfirmedException') {
+  //       navigation.navigate(routes.auth.twoFactorConfirm, {
+  //         email: data.email || '',
+  //         resume: true,
+  //         password: data.password || '',
+  //       });
+  //     } else {
+  //       globalSnackbarRef.current?.show(user.data.message || 'Login failed. Please try again');
+  //     }
+  //   },
+  //   [isValid],
+  // );
 
-  const hanldeRegister = useCallback(() => {
-    navigation.dispatch(StackActions.replace(routes.auth.registration));
-  }, []);
+  // const hanldeRegister = useCallback(() => {
+  //   navigation.dispatch(StackActions.replace(routes.auth.registration));
+  // }, []);
 
-  const handleShowPassword = useCallback(() => {
-    setShowPassword(!showPassword);
-  }, [showPassword]);
+  // const handleShowPassword = useCallback(() => {
+  //   setShowPassword(!showPassword);
+  // }, [showPassword]);
 
-  const handleHelp = useCallback(() => {
-    navigation.dispatch(StackActions.replace(routes.auth.getStarted));
-  }, [navigation]);
+  // const handleHelp = useCallback(() => {
+  //   navigation.dispatch(StackActions.replace(routes.auth.getStarted));
+  // }, [navigation]);
 
   return (
     <KeyboardAvoidingView
@@ -89,13 +89,11 @@ export const LoginScreen: React.FC = () => {
       style={{ flex: 1, backgroundColor: '#ECECEC' }}
       keyboardVerticalOffset={-200}
     >
-      <ScrollDiv bg="light3" h="100%">
+      {/* <ScrollDiv bg="light3" h="100%">
         <Div bg="light3" alignItems="center" justifyContent="flex-start" pb={40}>
           <Graphic width="70%" height={250} style={{ marginTop: '15%', alignSelf: 'center' }} />
-          {/* <LogoFull width={150} height={100} style={{ marginTop: 30, alignSelf: 'center' }} /> */}
           <Image source={logo} w={200} h={50} resizeMode="contain" />
 
-          {/* TODO: Temporary banner image since asset not included */}
           <Div alignItems="center" px={12} mt={30} w="100%">
             <Heading2>Sign In</Heading2>
             <Heading4 color="text3">Enter Your Login Credentials</Heading4>
@@ -199,7 +197,7 @@ export const LoginScreen: React.FC = () => {
         <Div bg="main" rounded="circle" p={8} position="absolute" bottom={30} right={34}>
           <Icon name="help-circle" fontFamily="Feather" color="light1" fontSize="4xl" />
         </Div>
-      </Pressable>
+      </Pressable> */}
     </KeyboardAvoidingView>
   );
 };

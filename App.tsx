@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { LogBox } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import { LogBox } from 'react-native';
 import { ThemeProvider, Snackbar, Button, Icon } from 'react-native-magnus';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ import { globalSnackbarRef } from './src/utils/globalSnackbar';
 import { Navigation } from './src/navigation/Navigation';
 import { SplashScreen } from './src/screens/SplashScreen';
 
-import { theme } from './src/theme/theme'; 
+import { theme } from './src/theme/theme';
 
 export default function App() {
   LogBox.ignoreAllLogs(); // TODO:L Temporary
@@ -42,3 +42,4 @@ export default function App() {
       </QueryClientProvider>
     </ThemeProvider>
   );
+}

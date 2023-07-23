@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigation } from '@react-navigation/native';
-import { phone } from 'phone';
 import React, { useCallback, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
@@ -18,94 +17,84 @@ import { globalSnackbarRef } from '../../utils/globalSnackbar';
 import { openLink } from '../../utils/helpers';
 import { validatePassword } from '../../utils/validations';
 
-const logo = require('../../../assets/icon.png');
+const logo = require('../../../assets/logo.png');
 
 export const RegistrationScreen: React.FC = () => {
-  const { navigate } = useNavigation();
-  const { signUp } = useAmplifyAuth();
-  const { top } = useSafeAreaInsets();
-  const [showPassword, setShowPassword] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const { navigate } = useNavigation();
+  // const { signUp } = useAmplifyAuth();
+  // const { top } = useSafeAreaInsets();
+  // const [showPassword, setShowPassword] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const schema = yup
-    .object({
-      firstName: yup.string().required('First Name required'),
-      lastName: yup.string().required('Last Name required'),
-      email: yup.string().email('Invalid email').required('Email required'),
-      phoneNumber: yup
-        .string()
-        .min(4, 'Invalid phone number')
-        .max(15, 'Invalid phone number')
-        .matches(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/g, 'Invalid phone number')
-        .required('Phone Number required'),
-      password: yup
-        .string()
-        .test(
-          'is-valid-password',
-          'Your password must contain uppercase and lowercase letters, at least one number, and at least one symbol.',
-          validatePassword,
-        )
-        .required('Password required'),
-    })
-    .required();
+  // const schema = yup
+  //   .object({
+  //     firstName: yup.string().required('First Name required'),
+  //     lastName: yup.string().required('Last Name required'),
+  //     email: yup.string().email('Invalid email').required('Email required'),
+  //     phoneNumber: yup
+  //       .string()
+  //       .min(4, 'Invalid phone number')
+  //       .max(15, 'Invalid phone number')
+  //       .matches(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/g, 'Invalid phone number')
+  //       .required('Phone Number required'),
+  //     password: yup
+  //       .string()
+  //       .test(
+  //         'is-valid-password',
+  //         'Your password must contain uppercase and lowercase letters, at least one number, and at least one symbol.',
+  //         validatePassword,
+  //       )
+  //       .required('Password required'),
+  //   })
+  //   .required();
 
-  const { handleSubmit, control, watch } = useForm({
-    mode: 'onChange',
-    resolver: yupResolver(schema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      password: '',
-    },
-  });
+  // const { handleSubmit, control, watch } = useForm({
+  //   mode: 'onChange',
+  //   resolver: yupResolver(schema),
+  //   defaultValues: {
+  //     firstName: '',
+  //     lastName: '',
+  //     email: '',
+  //     phoneNumber: '',
+  //     password: '',
+  //   },
+  // });
 
-  const formValues = watch();
+  // const formValues = watch();
 
-  const { isValid, errors } = useFormState({ control });
+  // const { isValid, errors } = useFormState({ control });
 
-  const handleSignUp = useCallback(
-    async (data: any) => {
-      if (!data || !isValid) return;
-      setIsLoading(true);
-      Keyboard.dismiss();
+  // const handleSignUp = useCallback(
+  //   async (data: any) => {
+  //     if (!data || !isValid) return;
+  //     setIsLoading(true);
+  //     Keyboard.dismiss();
 
-      data.phoneNumber = phone(data.phoneNumber, {
-        country: 'AUS',
-        validateMobilePrefix: false,
-      }).phoneNumber;
+  //     const user = await signUp(data);
+  //     setIsLoading(false);
+  //     console.log('[Log] user', { user });
+  //     if (user && !user.error) {
+  //       navigate(routes.auth.twoFactorConfirm, { email: data.email || '' });
+  //     } else {
+  //       if (user?.error?.code === 'UsernameExistsException') {
+  //         globalSnackbarRef.current?.show(
+  //           'This email address is active. Please login or reset password',
+  //         );
+  //       } else {
+  //         globalSnackbarRef.current?.show('Error occured. Please try again.');
+  //       }
+  //     }
+  //   },
+  //   [isValid],
+  // );
 
-      if (!data.phoneNumber) {
-        setIsLoading(false);
-        return;
-      }
+  // const hanldeSignIn = useCallback(() => {
+  //   navigate(routes.auth.login);
+  // }, []);
 
-      const user = await signUp(data);
-      setIsLoading(false);
-      console.log('[Log] user', { user });
-      if (user && !user.error) {
-        navigate(routes.auth.twoFactorConfirm, { email: data.email || '' });
-      } else {
-        if (user?.error?.code === 'UsernameExistsException') {
-          globalSnackbarRef.current?.show(
-            'This email address is active. Please login or reset password',
-          );
-        } else {
-          globalSnackbarRef.current?.show('Error occured. Please try again.');
-        }
-      }
-    },
-    [isValid],
-  );
-
-  const hanldeSignIn = useCallback(() => {
-    navigate(routes.auth.login);
-  }, []);
-
-  const handleShowPassword = useCallback(() => {
-    setShowPassword(!showPassword);
-  }, [showPassword]);
+  // const handleShowPassword = useCallback(() => {
+  //   setShowPassword(!showPassword);
+  // }, [showPassword]);
 
   return (
     <KeyboardAvoidingView
@@ -113,7 +102,7 @@ export const RegistrationScreen: React.FC = () => {
       style={{ flex: 1, backgroundColor: '#ECECEC' }}
       keyboardVerticalOffset={-200}
     >
-      <ScrollDiv h="100%" bg="light3">
+      {/* <ScrollDiv h="100%" bg="light3">
         <Div bg="light3" alignItems="center" justifyContent="flex-start" pb={40}>
           <Image source={logo} w={60} h={60} mt={top + 40} />
           <Div alignItems="center" mt={8} p={12} w="100%">
@@ -323,7 +312,7 @@ export const RegistrationScreen: React.FC = () => {
             </Div>
           </Div>
         </Div>
-      </ScrollDiv>
+      </ScrollDiv> */}
     </KeyboardAvoidingView>
   );
 };

@@ -5,8 +5,9 @@ export const theme: ThemeType = {
     main: 'main100',
     main20: '#f0c295',
     main80: '#FFB060',
-    main100: '##FF8A00',
-    main120: '#D16900',
+    main100: '#FF8A00',
+    main120: '#ff6a00',
+    main140: '#ff5500',
 
     secondary: 'secondary100',
     secondary100: '#101B39',

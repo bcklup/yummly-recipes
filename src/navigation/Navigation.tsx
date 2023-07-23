@@ -14,6 +14,7 @@ import GetStarted from '../screens/auth/GetStarted';
 import { SplashScreen } from '../screens/SplashScreen';
 import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 import { LoginScreen } from '../screens/auth/LoginScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 // import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 
@@ -46,6 +47,7 @@ const MainNavigator = () => {
       <MainStack.Screen component={GetStarted} name={routes.auth.getStarted} />
       <MainStack.Screen component={RegistrationScreen} name={routes.auth.registration} />
       <MainStack.Screen component={LoginScreen} name={routes.auth.login} />
+      <MainStack.Screen component={HomeScreen} name={routes.home.dashboard} />
     </MainStack.Navigator>
   );
 };
