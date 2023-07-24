@@ -1,17 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Button as MagnusButton, Div, Image } from 'react-native-magnus';
+import React, { useCallback } from 'react';
+import { Div, Image } from 'react-native-magnus';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { routes } from '../../navigation/routes';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Tokens } from '../../constants/namespaces';
-import { Body, Heading1, Heading3, Heading4 } from '../../theme/Typography';
 import { ImageBackground } from 'react-native';
+import Button from '../../components/Button';
 import GradientDiv from '../../components/GradientDiv';
+import { Heading4 } from '../../theme/Typography';
 import { theme } from '../../theme/theme';
 import { colorWithOpacity } from '../../utils/utilsCommon';
-import Button from '../../components/Button';
 
 const textLogo = require('../../../assets/logo-text.png');
 const hero = require('../../../assets/images/welcome-hero.png');
@@ -23,15 +21,19 @@ const GetStarted = () => {
 
   const handleSkip = useCallback(async () => {
     try {
-      await AsyncStorage.setItem(Tokens.DONE_FIRST_TIME_FLOW, 'true');
-      navigate(routes.auth.login);
+      navigate(routes.home.dashboard);
     } catch (e) {}
   }, [navigate]);
 
   const handleLogin = useCallback(async () => {
     try {
-      await AsyncStorage.setItem(Tokens.DONE_FIRST_TIME_FLOW, 'true');
-      navigate(routes.home.dashboard);
+      navigate(routes.auth.login);
+    } catch (e) {}
+  }, [navigate]);
+
+  const handleSignUp = useCallback(async () => {
+    try {
+      navigate(routes.auth.registration);
     } catch (e) {}
   }, [navigate]);
 
@@ -58,30 +60,27 @@ const GetStarted = () => {
           <Div position="absolute" top={-150} alignItems="center">
             <Image w={340} h={300} resizeMode="contain" source={imageHeading} />
 
-            <Div w="80%" alignItems="center">
+            <Div w="90%" alignItems="center">
               <Button onPress={handleLogin} bg="main" mt={0}>
                 <Heading4 fontWeight="500" color="light1">
                   LOGIN
                 </Heading4>
               </Button>
-            </Div>
-            <Div w="80%" alignItems="center">
-              <Button onPress={handleLogin} bg="dark" mt={10}>
+              <Button onPress={handleSignUp} bg="dark" mt={10}>
                 <Heading4 fontWeight="500" color="light1">
                   SIGN UP
                 </Heading4>
               </Button>
-            </Div>
-
-            <Button bg="transparent" onPress={handleSkip}>
-              <Heading4 color="text" fontWeight="500">
-                Or Start to
-                <Heading4 color="main" fontWeight="500">
-                  {' '}
-                  Search Now
+              <Button bg="transparent" onPress={handleSkip}>
+                <Heading4 color="text" fontWeight="500">
+                  Or Start to
+                  <Heading4 color="main" fontWeight="500">
+                    {' '}
+                    Search Now
+                  </Heading4>
                 </Heading4>
-              </Heading4>
-            </Button>
+              </Button>
+            </Div>
           </Div>
         </Div>
       </Div>

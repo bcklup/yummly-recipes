@@ -1,5 +1,5 @@
 import { ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import * as Updates from 'expo-updates';
 import React, { useEffect } from 'react';
 import { Div } from 'react-native-magnus';
@@ -24,7 +24,7 @@ export const SplashScreen: React.FC = () => {
         throw new Error();
       }
     } catch {
-      navigation.navigate(routes.auth.getStarted);
+      navigation.dispatch(StackActions.replace(routes.auth.getStarted));
       // const authData = await getAuth();
       // if (authData) {
       //   doLoginNavigations();
