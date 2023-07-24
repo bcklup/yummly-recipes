@@ -8,12 +8,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useUserRequests } from '../hooks/user-hooks';
 import { routes } from '../navigation/routes';
 import { Tokens } from '../constants/namespaces';
+import useMainStore from '../store/main';
+import { supabase } from '../initSupabase';
 
 const splash = require('../../assets/splash.png');
 
 export const SplashScreen: React.FC = () => {
   const navigation = useNavigation();
-  // const { doLoginNavigations } = useUserRequests();
+  const { setSession } = useMainStore();
 
   const startup = async () => {
     try {
@@ -24,27 +26,18 @@ export const SplashScreen: React.FC = () => {
         throw new Error();
       }
     } catch {
-      navigation.dispatch(StackActions.replace(routes.auth.getStarted));
-      // const authData = await getAuth();
-      // if (authData) {
-      //   doLoginNavigations();
-      // } else {
-      //   doUnauthenticated();
-      // }
+      supabase.auth
+        .getSession()
+        .then(({ data: { session } }) => {
+          if (session) {
+            setSession(session);
+            navigation.dispatch(StackActions.replace(routes.home.dashboard));
+          } else throw new Error('Session is null');
+        })
+        .catch((msg) => {
+          navigation.dispatch(StackActions.replace(routes.auth.getStarted));
+        });
     }
-  };
-
-  const doUnauthenticated = async () => {
-    // try {
-    //   const res = await AsyncStorage.getItem(Tokens.DONE_FIRST_TIME_FLOW);
-    //   if (res && res === 'true') {
-    //     navigation.navigate(routes.auth.login);
-    //   } else {
-    //     navigation.navigate(routes.auth.getStarted);
-    //   }
-    // } catch (e) {
-    //   navigation.navigate(routes.auth.getStarted);
-    // }
   };
 
   useEffect(() => {

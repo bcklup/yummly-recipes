@@ -25,6 +25,7 @@
     "expo": "~48.0.18",
     "expo-av": "~13.2.1",
     "expo-linear-gradient": "~12.1.2",
+    "expo-secure-store": "~12.1.1",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
@@ -39,8 +40,10 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^9.2.0",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

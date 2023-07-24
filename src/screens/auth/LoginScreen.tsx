@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
 import { Div, Icon, ScrollDiv } from 'react-native-magnus';
@@ -13,6 +13,9 @@ import FormInput from '../../components/FormInput';
 import { ScreenLayout } from '../../components/ScreenLayout';
 import { routes } from '../../navigation/routes';
 import { Heading3, Highlight, Paragraph } from '../../theme/Typography';
+import { globalSnackbarRef } from '../../utils/globalSnackbar';
+import { supabase } from '../../initSupabase';
+import useMainStore from '../../store/main';
 const logo = require('../../../assets/logo-text.png');
 
 export const LoginScreen: React.FC = () => {
@@ -20,6 +23,7 @@ export const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const { session, setSession } = useMainStore();
 
   const schema = yup
     .object({
@@ -49,19 +53,24 @@ export const LoginScreen: React.FC = () => {
       Keyboard.dismiss();
       if (!data || !isValid) return;
 
-      // const user = await signIn(data);
-      // setIsLoading(false);
-      // if (user.success) {
-      //   doLoginNavigations();
-      // } else if (user.data.code === 'UserNotConfirmedException') {
-      //   navigation.navigate(routes.auth.twoFactorConfirm, {
-      //     email: data.email || '',
-      //     resume: true,
-      //     password: data.password || '',
-      //   });
-      // } else {
-      //   globalSnackbarRef.current?.show(user.data.message || 'Login failed. Please try again');
-      // }
+      const { error, data: resData } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (resData.session) {
+        setSession(resData.session);
+        setIsLoading(false);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: routes.home.dashboard }],
+          }),
+        );
+      } else {
+        setIsLoading(false);
+        globalSnackbarRef.current?.show(error?.message || 'Login failed. Please try again');
+      }
     },
     [isValid],
   );
