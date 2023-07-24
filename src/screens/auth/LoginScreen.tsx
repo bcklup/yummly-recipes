@@ -23,7 +23,7 @@ export const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const { session, setSession } = useMainStore();
+  const { setSession } = useMainStore();
 
   const schema = yup
     .object({

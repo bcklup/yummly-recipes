@@ -1,28 +1,27 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { useForm, useFormState } from 'react-hook-form';
-import { Keyboard, KeyboardAvoidingView, Platform, Pressable } from 'react-native';
-import { Div, Icon, Image, ScrollDiv } from 'react-native-magnus';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Keyboard, Pressable } from 'react-native';
+import { Div, Icon, ScrollDiv } from 'react-native-magnus';
 import * as yup from 'yup';
 import Button from '../../components/Button';
 
 import FormInput from '../../components/FormInput';
-import { useAmplifyAuth } from '../../hooks/auth-hooks';
-import { useUserRequests } from '../../hooks/user-hooks';
+import { ScreenLayout } from '../../components/ScreenLayout';
+import { supabase } from '../../initSupabase';
 import { routes } from '../../navigation/routes';
-import { Heading2, Heading3, Heading4, Paragraph, ParagraphLight } from '../../theme/Typography';
+import useMainStore from '../../store/main';
+import { Heading3, Highlight, ParagraphLight } from '../../theme/Typography';
 import { globalSnackbarRef } from '../../utils/globalSnackbar';
 import { openLink } from '../../utils/utilsCommon';
 import { validatePassword } from '../../utils/validations';
-import { ScreenLayout } from '../../components/ScreenLayout';
 
 const logo = require('../../../assets/logo.png');
 
 export const RegistrationScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { top } = useSafeAreaInsets();
+  const { setSession } = useMainStore();
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,12 +30,6 @@ export const RegistrationScreen: React.FC = () => {
       firstName: yup.string().required('First Name required'),
       lastName: yup.string().required('Last Name required'),
       email: yup.string().email('Invalid email').required('Email required'),
-      phoneNumber: yup
-        .string()
-        .min(4, 'Invalid phone number')
-        .max(15, 'Invalid phone number')
-        .matches(/^([+]?\d{1,2}[-\s]?|)\d{3}[-\s]?\d{3}[-\s]?\d{4}$/g, 'Invalid phone number')
-        .required('Phone Number required'),
       password: yup
         .string()
         .test(
@@ -48,19 +41,16 @@ export const RegistrationScreen: React.FC = () => {
     })
     .required();
 
-  const { handleSubmit, control, watch } = useForm({
+  const { handleSubmit, control } = useForm({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: {
       firstName: '',
       lastName: '',
       email: '',
-      phoneNumber: '',
       password: '',
     },
   });
-
-  const formValues = watch();
 
   const { isValid, errors } = useFormState({ control });
 
@@ -76,27 +66,39 @@ export const RegistrationScreen: React.FC = () => {
       setIsLoading(true);
       Keyboard.dismiss();
 
-      // const user = await signUp(data);
-      // setIsLoading(false);
-      // console.log('[Log] user', { user });
-      // if (user && !user.error) {
-      //   navigate(routes.auth.twoFactorConfirm, { email: data.email || '' });
-      // } else {
-      //   if (user?.error?.code === 'UsernameExistsException') {
-      //     globalSnackbarRef.current?.show(
-      //       'This email address is active. Please login or reset password',
-      //     );
-      //   } else {
-      //     globalSnackbarRef.current?.show('Error occured. Please try again.');
-      //   }
-      // }
+      const { error, data: resData } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log('[Log] error, resData', { error, resData });
+
+      if (resData.session && !error) {
+        setSession(resData.session);
+
+        // handle update user data
+        const { error: error2, data: resData2 } = await supabase.from('profiles').upsert({
+          user_id: resData?.session.user.id,
+          first_name: data.firstName,
+          last_name: data.lastName,
+        });
+
+        console.log('[Log] error2, resData2', { error2, resData2 });
+
+        setIsLoading(false);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: routes.home.dashboard }],
+          }),
+        );
+      } else {
+        setIsLoading(false);
+        globalSnackbarRef.current?.show(error?.message || 'Login failed. Please try again');
+      }
     },
     [isValid],
   );
-
-  const hanldeSignIn = useCallback(() => {
-    navigation.dispatch(StackActions.replace(routes.auth.login));
-  }, []);
 
   const handleShowPassword = useCallback(() => {
     setShowPassword(!showPassword);
@@ -226,7 +228,7 @@ export const RegistrationScreen: React.FC = () => {
           mt={20}
           disabled={isLoading}
           loading={isLoading}
-          onPress={handleSubmit(hanldeSignIn)}
+          onPress={handleSubmit(handleSignUp)}
         >
           <Heading3 fontWeight="500" color="light1" mr={20}>
             Continue
@@ -236,9 +238,9 @@ export const RegistrationScreen: React.FC = () => {
         <ParagraphLight color="dark3" textAlign="center" mt={24}>
           By Creating an account you agree to our terms and conditions and privacy policy as
           documented{' '}
-          <ParagraphLight color="main" onPress={handleTermsLink}>
+          <Highlight color="main" onPress={handleTermsLink}>
             here.
-          </ParagraphLight>
+          </Highlight>
         </ParagraphLight>
       </ScrollDiv>
     </ScreenLayout>
