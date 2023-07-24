@@ -13,8 +13,9 @@ const Button: React.FC<Props> = ({ wrapperFlex, children, ...btnProps }) => {
     switch (btnProps.bg) {
       case 'transparent':
         return ['transparent', 'transparent'];
+      case 'secondary':
       case 'dark':
-        return [theme.colors.dark3, theme.colors.dark2];
+        return [theme.colors.secondary100, theme.colors.dark3];
       case 'light':
         return [theme.colors.main20, theme.colors.light1];
       case 'main':

@@ -3,18 +3,18 @@ import { ThemeType } from 'react-native-magnus';
 export const theme: ThemeType = {
   colors: {
     main: 'main100',
-    main20: '#f0c295',
-    main80: '#FFB060',
-    main100: '#FF8A00',
-    main120: '#ff6a00',
-    main140: '#ff5500',
+    main20: '##fcb588',
+    main80: '##ffa166',
+    main100: '#FF914D',
+    main120: '#f57b2f',
+    main140: '#ff7724',
 
     secondary: 'secondary100',
-    secondary100: '#101B39',
-    secondary80: '#293A63',
+    secondary100: '#201E1E',
+    secondary80: '#3d3028',
 
     text: 'text1',
-    text1: '#151515',
+    text1: '#201E1E',
     text2: '#272727',
     text3: '#525252',
     text4: '#746F6F',
@@ -34,6 +34,8 @@ export const theme: ThemeType = {
     light4: '#DFDFDF',
 
     gray400: '#EFEFEF',
+
+    bgLight1: '#f4f0e8',
 
     highlightBlue: 'highlightBlue100',
     highlightBlue100: '#0063f7',

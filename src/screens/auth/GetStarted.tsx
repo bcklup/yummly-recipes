@@ -15,11 +15,9 @@ import Button from '../../components/Button';
 
 const textLogo = require('../../../assets/logo-text.png');
 const hero = require('../../../assets/images/welcome-hero.png');
-
-const lastStep = 7;
+const imageHeading = require('../../../assets/images/login-heading.png');
 
 const GetStarted = () => {
-  const [step, setStep] = useState<number>(1);
   const { navigate } = useNavigation();
   const { top } = useSafeAreaInsets();
 
@@ -38,40 +36,56 @@ const GetStarted = () => {
   }, [navigate]);
 
   return (
-    <ImageBackground source={hero} style={{ flex: 1 }}>
-      <GradientDiv
-        flex={2}
-        w="100%"
-        colors={['transparent', colorWithOpacity(theme.colors.dark1, 95)]}
-      >
-        <Div justifyContent="center" alignItems="center" mt={top + 100}>
-          <Image w={250} h={120} source={textLogo} shadow="xl" />
-        </Div>
-      </GradientDiv>
-
-      <Div flex={1} pb={40} bg={colorWithOpacity(theme.colors.dark1, 95)} px={24}>
-        <Div flex={1} alignItems="center">
-          <Div flex={1} alignItems="center">
-            <Heading1 color="main" textAlign="center">
-              Pinoy Recipes
-            </Heading1>
-            <Heading1 color="light1">for you!</Heading1>
+    <Div style={{ flex: 1 }}>
+      <ImageBackground source={hero} resizeMode="cover" style={{ flex: 2, width: '100%' }}>
+        <GradientDiv
+          flex={2}
+          w="100%"
+          colors={[
+            'transparent',
+            colorWithOpacity(theme.colors.bgLight1, 10),
+            colorWithOpacity(theme.colors.bgLight1, 95),
+          ]}
+        >
+          <Div justifyContent="center" alignItems="center" mt={top + 10}>
+            <Image w={200} h={60} source={textLogo} />
           </Div>
+        </GradientDiv>
+      </ImageBackground>
 
-          <Div w="80%" alignItems="center">
-            <Button onPress={handleLogin} bg="main" mt={0}>
-              <Heading4 fontWeight="500" color="light1">
-                LOGIN
+      <Div flex={1.3} pb={40} bg={colorWithOpacity(theme.colors.bgLight1, 95)} px={24}>
+        <Div flex={1} position="relative">
+          <Div position="absolute" top={-150} alignItems="center">
+            <Image w={340} h={300} resizeMode="contain" source={imageHeading} />
+
+            <Div w="80%" alignItems="center">
+              <Button onPress={handleLogin} bg="main" mt={0}>
+                <Heading4 fontWeight="500" color="light1">
+                  LOGIN
+                </Heading4>
+              </Button>
+            </Div>
+            <Div w="80%" alignItems="center">
+              <Button onPress={handleLogin} bg="dark" mt={10}>
+                <Heading4 fontWeight="500" color="light1">
+                  SIGN UP
+                </Heading4>
+              </Button>
+            </Div>
+
+            <Button bg="transparent" onPress={handleSkip}>
+              <Heading4 color="text" fontWeight="500">
+                Or Start to
+                <Heading4 color="main" fontWeight="500">
+                  {' '}
+                  Search Now
+                </Heading4>
               </Heading4>
             </Button>
           </Div>
-
-          <Button bg="transparent" onPress={handleSkip}>
-            <Heading4 color="light1">Skip</Heading4>
-          </Button>
         </Div>
       </Div>
-    </ImageBackground>
+    </Div>
   );
 };
 

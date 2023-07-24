@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { Tokens } from './constants/namespaces';
+import { Database } from './types/supabase';
 
 // Better put your these secret keys in .env file
-export const supabase = createClient(
+export const supabase = createClient<Database>(
   '',
   '',
   {
