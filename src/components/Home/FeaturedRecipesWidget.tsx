@@ -41,7 +41,18 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
     }
 
     return (
-      <ScrollDiv horizontal mt={14}>
+      <ScrollDiv
+        horizontal
+        mt={14}
+        showsHorizontalScrollIndicator={false}
+        pl={24}
+        // decelerationRate="fast"
+        // snapToAlignment="start"
+        // scrollEventThrottle={16}
+        // snapToInterval={140}
+        // contentInset={{ left: 24 }}
+        // bounces={false}
+      >
         {recipes.map((recipe, i) => (
           <VerticalRecipeCard recipe={recipe} key={i} />
         ))}
@@ -51,7 +62,9 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
 
   return (
     <Div mt={28} w="100%">
-      <Heading2 fontWeight="700">{title}</Heading2>
+      <Heading2 fontWeight="700" mx={24}>
+        {title}
+      </Heading2>
       {Content}
     </Div>
   );

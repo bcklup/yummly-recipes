@@ -27,7 +27,7 @@ const ShortcutWidget: React.FC<Props> = () => {
   }, [session]);
 
   return (
-    <Div mt={28} w="100%">
+    <Div mt={28} w="100%" mx={24}>
       <Heading2 fontWeight="700">Your Lists</Heading2>
       <Button py={6} mt={6} bg="transparent" onPress={goToSaved}>
         <Heading3 color="main">Saved Recipes</Heading3>

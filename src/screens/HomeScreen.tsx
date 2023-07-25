@@ -40,12 +40,11 @@ const HomeScreen: React.FC = () => {
     <ScrollDiv
       flex={1}
       mt={top + 10}
-      px={24}
       bg="light"
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
     >
-      <Div mr="20%">
+      <Div mr="20%" px={24}>
         <BodyMedium color="text4">Hello{!firstName ? '!' : `, ${firstName}`}</BodyMedium>
         <Heading1 fontWeight="600">What would you like to cook today?</Heading1>
       </Div>
@@ -55,6 +54,7 @@ const HomeScreen: React.FC = () => {
         rounded="circle"
         block
         mt={18}
+        mx={24}
         onPress={goToSearch}
         alignItems="center"
         justifyContent="flex-start"
