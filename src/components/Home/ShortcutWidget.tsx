@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import { Button, Div } from 'react-native-magnus';
-import { Heading3, Heading4 } from '../../theme/Typography';
+import { Heading2, Heading3, Heading4 } from '../../theme/Typography';
 import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { routes } from '../../navigation/routes';
 
@@ -19,12 +19,12 @@ const ShortcutWidget: React.FC<Props> = () => {
 
   return (
     <Div mt={28} w="100%">
-      <Heading3 fontWeight="600">Your Lists</Heading3>
+      <Heading2 fontWeight="700">Your Lists</Heading2>
       <Button py={6} mt={6} bg="transparent" onPress={goToSaved}>
-        <Heading4 color="main">Saved Recipes</Heading4>
+        <Heading3 color="main">Saved Recipes</Heading3>
       </Button>
       <Button py={6} bg="transparent" onPress={goToRecents}>
-        <Heading4 color="main">Recently Viewed</Heading4>
+        <Heading3 color="main">Recently Viewed</Heading3>
       </Button>
     </Div>
   );

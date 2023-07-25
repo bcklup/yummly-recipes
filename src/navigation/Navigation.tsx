@@ -108,7 +108,7 @@ const BottomTabNavigator = () => {
           title: 'Search',
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => (
-            <TabBarIcon color={color} fontFamily="Ionicons" name="search" fontSize="4xl" />
+            <TabBarIcon color={color} fontFamily="Ionicons" name="search" fontSize="5xl" />
           ),
         })}
       />
@@ -165,4 +165,4 @@ export const Navigation = () => {
   );
 };
 
-const TabBarIcon = (props: IconProps) => <Icon fontSize="3xl" mb={-5} {...props} />;
+const TabBarIcon = (props: IconProps) => <Icon fontSize="4xl" mb={-5} {...props} />;

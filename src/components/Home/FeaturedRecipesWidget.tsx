@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { Div, ScrollDiv } from 'react-native-magnus';
 import { FeaturedRecipes, useFeaturedRecipes } from '../../hooks/recipes.hooks';
-import { Heading3, Paragraph } from '../../theme/Typography';
-import { ActivityIndicator } from 'react-native';
+import { Body, Heading2 } from '../../theme/Typography';
 import VerticalRecipeCard from '../VerticalRecipeCard';
 
 type Props = {
@@ -35,13 +35,13 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
     if (recipes.length <= 0) {
       return (
         <Div w="100%" minH={100} alignItems="center" justifyContent="center">
-          <Paragraph>No recipes to show.</Paragraph>
+          <Body>No recipes to show.</Body>
         </Div>
       );
     }
 
     return (
-      <ScrollDiv horizontal mt={8}>
+      <ScrollDiv horizontal mt={14}>
         {recipes.map((recipe, i) => (
           <VerticalRecipeCard recipe={recipe} key={i} />
         ))}
@@ -51,7 +51,7 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
 
   return (
     <Div mt={28} w="100%">
-      <Heading3 fontWeight="600">{title}</Heading3>
+      <Heading2 fontWeight="700">{title}</Heading2>
       {Content}
     </Div>
   );

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Div, Image } from 'react-native-magnus';
 import { Database } from '../types/supabase';
-import { BodyHeavy, Highlight } from '../theme/Typography';
+import { BodyHeavy, BodyMedium, Highlight } from '../theme/Typography';
 import { supabase } from '../initSupabase';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -47,12 +47,12 @@ const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
         }
         resizeMode="cover"
         rounded="xl"
-        w={120}
-        h={150}
+        w={140}
+        h={170}
       />
-      <Highlight mt={8} ellipsizeMode="tail" numberOfLines={2}>
+      <BodyMedium ml={4} fontWeight="600" mt={8} ellipsizeMode="tail" numberOfLines={2}>
         {recipe.title}
-      </Highlight>
+      </BodyMedium>
     </Pressable>
   );
 };
