@@ -21,6 +21,7 @@ import AccountScreen from '../screens/AccountScreen';
 import { theme } from '../theme/theme';
 import RecipeScreen from '../screens/RecipeScreen';
 import SearchRecipeScreen from '../screens/SearchRecipeScreen';
+import RecentRecipesScreen from '../screens/RecentRecipesScreen';
 
 // import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 
@@ -63,6 +64,7 @@ const AccountNavigations = () => (
     screenOptions={{ headerShown: false }}
   >
     <AccountStack.Screen component={AccountScreen} name={routes.account.account} />
+    <AccountStack.Screen component={RecentRecipesScreen} name={routes.account.recent} />
   </AccountStack.Navigator>
 );
 

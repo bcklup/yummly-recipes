@@ -5,10 +5,23 @@ import { Heading3, Paragraph } from '../../theme/Typography';
 import { ActivityIndicator } from 'react-native';
 import VerticalRecipeCard from '../VerticalRecipeCard';
 
-type Props = {};
+type Props = {
+  type: FeaturedRecipes;
+};
 
-const TrendingRecipes: React.FC<Props> = () => {
-  const { recipes, isLoading } = useFeaturedRecipes(FeaturedRecipes.TRENDING);
+const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
+  const { recipes, isLoading } = useFeaturedRecipes(type);
+
+  const title = useMemo(() => {
+    switch (type) {
+      case FeaturedRecipes.LATEST:
+        return 'Latest Recipes ';
+      case FeaturedRecipes.TRENDING:
+        return 'Trending Recipes';
+      case FeaturedRecipes.BREAKFAST:
+        return 'Breakfast';
+    }
+  }, [type]);
 
   const Content = useMemo(() => {
     if (isLoading) {
@@ -37,11 +50,11 @@ const TrendingRecipes: React.FC<Props> = () => {
   }, [recipes, isLoading]);
 
   return (
-    <Div mt={24} w="100%">
-      <Heading3 fontWeight="600">Trending Recipes</Heading3>
+    <Div mt={28} w="100%">
+      <Heading3 fontWeight="600">{title}</Heading3>
       {Content}
     </Div>
   );
 };
 
-export default memo(TrendingRecipes);
+export default memo(FeaturedRecipesWidget);

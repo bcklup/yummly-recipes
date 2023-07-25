@@ -1,17 +1,28 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
-import { Div, Image } from 'react-native-magnus';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Div, Image } from 'react-native-magnus';
 import { Database } from '../types/supabase';
 import { BodyHeavy, Highlight } from '../theme/Typography';
 import { supabase } from '../initSupabase';
+import { Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { routes } from '../navigation/routes';
 
 const placeholderImage = require('../../assets/images/thumb-placeholder.png');
 
 type Props = {
-  recipe: Database['public']['Tables']['recipes']['Row'];
+  recipe:
+    | Database['public']['Tables']['recipes']['Row']
+    | Database['public']['Views']['trending_recipes']['Row'];
 };
 
 const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
-  if (!recipe) return <></>;
+  const { navigate } = useNavigation();
+
+  const handlePress = useCallback(() => {
+    if (recipe) {
+      navigate(routes.home.recipeDetails, { recipe });
+    }
+  }, [recipe]);
 
   const recipePhoto = useMemo(
     () =>
@@ -22,10 +33,10 @@ const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
     [recipe.hero_img],
   );
 
-  console.log('[Log] recipePhoto', recipePhoto);
+  if (!recipe) return <></>;
 
   return (
-    <Div maxW={120}>
+    <Pressable style={{ maxWidth: 120 }} onPress={handlePress}>
       <Image
         source={
           recipePhoto
@@ -39,10 +50,10 @@ const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
         w={120}
         h={150}
       />
-      <Highlight mt={8} fontWeight="600" ellipsizeMode="tail" numberOfLines={2}>
+      <Highlight mt={8} ellipsizeMode="tail" numberOfLines={2}>
         {recipe.title}
       </Highlight>
-    </Div>
+    </Pressable>
   );
 };
 

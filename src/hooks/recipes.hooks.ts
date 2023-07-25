@@ -5,6 +5,7 @@ import { Database } from '../types/supabase';
 export enum FeaturedRecipes {
   LATEST = 'latest',
   TRENDING = 'trending',
+  BREAKFAST = 'breakfast',
 }
 
 export const useFeaturedRecipes = (type: FeaturedRecipes) => {
@@ -23,6 +24,9 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
       case FeaturedRecipes.TRENDING: {
         fetchTrendingData();
         break;
+      }
+      case FeaturedRecipes.BREAKFAST: {
+        fetchBreakfastData();
       }
     }
   }, [type]);
@@ -49,6 +53,24 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
     supabase
       .from('trending_recipes')
       .select()
+      .limit(5)
+      .then(({ data, error }) => {
+        if (error || data.length <= 0) {
+          setRecipes([]);
+        } else {
+          setRecipes(data);
+        }
+        setIsLoading(false);
+      });
+  };
+
+  const fetchBreakfastData = async () => {
+    setIsLoading(true);
+    supabase
+      .from('recipes')
+      .select()
+      .in('id', ['4024b37a-cc8a-492f-9bb8-350cd620a045'])
+      .order('created_at')
       .limit(5)
       .then(({ data, error }) => {
         if (error || data.length <= 0) {

@@ -9,8 +9,10 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { routes } from '../navigation/routes';
 import { ScreenLayout } from '../components/ScreenLayout';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import LatestRecipes from '../components/Home/LatestRecipes';
-import TrendingRecipes from '../components/Home/TrendingRecipes';
+import LatestRecipes from '../components/Home/FeaturedRecipesWidget';
+import FeaturedRecipesWidget from '../components/Home/FeaturedRecipesWidget';
+import { FeaturedRecipes } from '../hooks/recipes.hooks';
+import ShortcutWidget from '../components/Home/ShortcutWidget';
 
 const HomeScreen: React.FC = () => {
   const { session, clearSession, profile } = useMainStore();
@@ -40,7 +42,7 @@ const HomeScreen: React.FC = () => {
   return (
     <ScrollDiv
       flex={1}
-      pt={top + 10}
+      mt={top + 10}
       px={24}
       bg="light"
       contentContainerStyle={{ flexGrow: 1 }}
@@ -64,8 +66,11 @@ const HomeScreen: React.FC = () => {
         <Highlight color="text5">Search any recipes</Highlight>
       </MagnusButton>
 
-      <LatestRecipes />
-      <TrendingRecipes />
+      <FeaturedRecipesWidget type={FeaturedRecipes.LATEST} />
+      <FeaturedRecipesWidget type={FeaturedRecipes.TRENDING} />
+      <FeaturedRecipesWidget type={FeaturedRecipes.BREAKFAST} />
+      <ShortcutWidget />
+      <Div h={50} />
     </ScrollDiv>
   );
 };
