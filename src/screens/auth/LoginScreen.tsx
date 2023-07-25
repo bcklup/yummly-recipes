@@ -23,7 +23,7 @@ export const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const { setSession } = useMainStore();
+  const { setSession, setProfile } = useMainStore();
 
   const schema = yup
     .object({
@@ -60,11 +60,19 @@ export const LoginScreen: React.FC = () => {
 
       if (resData.session) {
         setSession(resData.session);
+
+        const { data: profileData, error } = await supabase
+          .from('profiles')
+          .select()
+          .eq('user_id', resData.session.user.id);
+
+        setProfile(!error && profileData ? profileData[0] : null);
+
         setIsLoading(false);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: routes.home.dashboard }],
+            routes: [{ name: routes.root }],
           }),
         );
       } else {

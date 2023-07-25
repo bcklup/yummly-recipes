@@ -14,9 +14,20 @@ export const routes = {
     resetPasswordConfirmation: 'reset-password-confirmation',
   },
 
+  tabs: {
+    home: 'tabs-home',
+    saved: 'tabs-saved',
+    search: 'tabs-search',
+    account: 'tabs-account',
+  },
+
   home: {
     dashboard: 'dashboard',
     recipeDetails: 'recipe-details',
-    settings: 'settings',
+  },
+
+  account: {
+    account: 'account',
+    recent: 'recents',
   },
 };

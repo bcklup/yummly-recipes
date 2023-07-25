@@ -21,7 +21,7 @@ const logo = require('../../../assets/logo.png');
 
 export const RegistrationScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { setSession } = useMainStore();
+  const { setSession, setProfile } = useMainStore();
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -70,8 +70,7 @@ export const RegistrationScreen: React.FC = () => {
         email: data.email,
         password: data.password,
       });
-
-      console.log('[Log] error, resData', { error, resData });
+      // console.log('[Log] error, resData', { error, resData });
 
       if (resData.session && !error) {
         setSession(resData.session);
@@ -82,14 +81,20 @@ export const RegistrationScreen: React.FC = () => {
           first_name: data.firstName,
           last_name: data.lastName,
         });
+        // console.log('[Log] error2, resData2', { error2, resData2 });
 
-        console.log('[Log] error2, resData2', { error2, resData2 });
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select()
+          .eq('user_id', resData.session.user.id);
+
+        setProfile(!profileError && profileData ? profileData[0] : null);
 
         setIsLoading(false);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{ name: routes.home.dashboard }],
+            routes: [{ name: routes.root }],
           }),
         );
       } else {

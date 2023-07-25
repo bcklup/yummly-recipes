@@ -3,37 +3,30 @@ import { Session } from '@supabase/supabase-js';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { ExpoSecureStoreAdapter } from '../initSupabase';
+import { Database } from '../types/supabase';
 
 interface States {
   session: Session | null;
+  profile: Database['public']['Tables']['profiles']['Row'] | null;
 }
 
 interface Actions {
   setSession: (param: Session | null) => void;
+  setProfile: (param: States['profile']) => void;
   clearSession: () => void;
 }
 
 const initialState: States = {
   session: null,
-};
-
-const AsyncStorageAdapter = {
-  getItem: (key: string) => {
-    return AsyncStorage.getItem(key);
-  },
-  setItem: (key: string, value: string) => {
-    AsyncStorage.setItem(key, value);
-  },
-  removeItem: (key: string) => {
-    AsyncStorage.removeItem(key);
-  },
+  profile: null,
 };
 
 export default create<States & Actions>()(
   persist(
     (set) => ({
       ...initialState,
-      setSession: (param) => set(() => ({ session: param })),
+      setSession: (param) => set((state) => ({ ...state, session: param })),
+      setProfile: (param) => set((state) => ({ ...state, profile: param })),
       clearSession: () => set(() => ({ ...initialState })),
     }),
     {

@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { Div, Image } from 'react-native-magnus';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,26 +16,31 @@ const hero = require('../../../assets/images/welcome-hero.png');
 const imageHeading = require('../../../assets/images/login-heading.png');
 
 const GetStarted = () => {
-  const { navigate } = useNavigation();
+  const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
 
   const handleSkip = useCallback(async () => {
     try {
-      navigate(routes.home.dashboard);
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: routes.root }],
+        }),
+      );
     } catch (e) {}
-  }, [navigate]);
+  }, []);
 
   const handleLogin = useCallback(async () => {
     try {
-      navigate(routes.auth.login);
+      navigation.navigate(routes.auth.login);
     } catch (e) {}
-  }, [navigate]);
+  }, []);
 
   const handleSignUp = useCallback(async () => {
     try {
-      navigate(routes.auth.registration);
+      navigation.navigate(routes.auth.registration);
     } catch (e) {}
-  }, [navigate]);
+  }, []);
 
   return (
     <Div style={{ flex: 1 }}>

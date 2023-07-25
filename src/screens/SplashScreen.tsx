@@ -15,7 +15,7 @@ const splash = require('../../assets/splash.png');
 
 export const SplashScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { setSession } = useMainStore();
+  const { setSession, setProfile, clearSession } = useMainStore();
 
   const startup = async () => {
     try {
@@ -28,13 +28,22 @@ export const SplashScreen: React.FC = () => {
     } catch {
       supabase.auth
         .getSession()
-        .then(({ data: { session } }) => {
+        .then(async ({ data: { session } }) => {
           if (session) {
             setSession(session);
+
+            const { data: profileData, error } = await supabase
+              .from('profiles')
+              .select()
+              .eq('user_id', session.user.id);
+
+            setProfile(!error && profileData ? profileData[0] : null);
+
             navigation.dispatch(StackActions.replace(routes.home.dashboard));
           } else throw new Error('Session is null');
         })
-        .catch((msg) => {
+        .catch(() => {
+          clearSession();
           navigation.dispatch(StackActions.replace(routes.auth.getStarted));
         });
     }
