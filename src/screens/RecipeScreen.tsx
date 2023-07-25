@@ -5,7 +5,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { format } from 'date-fns';
 import { supabase } from '../initSupabase';
-import { Heading2, Heading4, Paragraph, Small, SmallHighlight } from '../theme/Typography';
+import {
+  Body,
+  Heading1,
+  Heading2,
+  Heading4,
+  Highlight,
+  Paragraph,
+  Small,
+  SmallHighlight,
+} from '../theme/Typography';
 import { Database } from '../types/supabase';
 import { DateTimeFormats } from '../utils/parsers';
 import { ResizeMode, Video } from 'expo-av';
@@ -37,16 +46,17 @@ const RecipeScreen: React.FC = () => {
       )
       .eq('id', recipe.id)
       .limit(1)
+      .single()
       .then(({ data, error }) => {
         console.log('[Log] data', { data });
-        if (error || !data || data.length <= 0) {
+        if (error || !data) {
           setFullRecipe(undefined);
           setComments([]);
           setSavedCount(0);
         } else {
-          setFullRecipe(data[0]);
-          setComments(data[0].comments);
-          setSavedCount(data[0].saved[0].count || 0);
+          setFullRecipe(data);
+          setComments(data.comments);
+          setSavedCount(data.saved[0].count || 0);
         }
       });
   };
@@ -82,14 +92,14 @@ const RecipeScreen: React.FC = () => {
       <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={330} w="100%">
         <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top}>
           <Div mx={24}>
-            <MagnusButton onPress={handleBack} bg="light" rounded="circle" p={5}>
-              <Icon color="text" fontFamily="AntDesign" fontSize="3xl" name="arrowleft" />
+            <MagnusButton onPress={handleBack} bg="light" rounded="circle" p={6}>
+              <Icon color="text" fontFamily="AntDesign" fontSize="4xl" name="arrowleft" />
             </MagnusButton>
           </Div>
 
           <Div mx={24}>
             <MagnusButton onPress={handleSave} bg="light" rounded="circle" p={8}>
-              <Icon color="text" fontFamily="Octicons" fontSize="2xl" name="heart" />
+              <Icon color="text" fontFamily="Octicons" fontSize="3xl" name="heart" />
             </MagnusButton>
           </Div>
         </Div>
@@ -99,32 +109,32 @@ const RecipeScreen: React.FC = () => {
         <Div w="30%" h={6} bg="light4" alignSelf="center" mt={10} rounded="circle" mb={24} />
         <Div mx={20} row justifyContent="space-between" alignItems="flex-start">
           <Div>
-            <Heading2 fontWeight="800" flex={1}>
+            <Heading1 fontWeight="800" flex={1}>
               {recipe?.title}
-            </Heading2>
+            </Heading1>
 
-            <Small color="text4" mt={4}>
+            <Paragraph color="text4" mt={4}>
               Updated on {datePosted}
-            </Small>
+            </Paragraph>
           </Div>
 
           <Div justifyContent="center" alignItems="center">
             <Div row alignItems="center" justifyContent="center">
-              <Icon color="main" fontFamily="Octicons" fontSize="2xl" name="heart-fill" />
+              <Icon color="main" fontFamily="Octicons" fontSize="4xl" name="heart-fill" />
               {savedCount ? (
-                <SmallHighlight color="main" ml={6}>
+                <Highlight color="main" ml={6}>
                   {savedCount}
-                </SmallHighlight>
+                </Highlight>
               ) : null}
             </Div>
           </Div>
         </Div>
 
         <Div mt={30} mx={20}>
-          <Heading4 fontWeight="700">Description</Heading4>
-          <Paragraph color="text4" mt={6}>
+          <Heading2 fontWeight="700">Description</Heading2>
+          <Body color="text4" mt={6}>
             {recipe?.description}
-          </Paragraph>
+          </Body>
         </Div>
 
         {recipe.video ? (
@@ -151,7 +161,7 @@ const RecipeScreen: React.FC = () => {
         ) : null}
 
         <Div mt={16} mx={20}>
-          <Heading4 fontWeight="700">Ingredients</Heading4>
+          <Heading2 fontWeight="700">Ingredients</Heading2>
           <Div mt={4}>
             {recipe?.ingredients?.ingredients && fullRecipe?.ingredients?.ingredients.length > 0
               ? fullRecipe?.ingredients?.ingredients.map((ingredient, i) => {
@@ -164,8 +174,8 @@ const RecipeScreen: React.FC = () => {
                       w="100%"
                       justifyContent="space-between"
                     >
-                      <Paragraph py={8}>{ingredient.item}</Paragraph>
-                      <Paragraph py={8}>{ingredient.quantity}</Paragraph>
+                      <Body py={8}>{ingredient.item}</Body>
+                      <Body py={8}>{ingredient.quantity}</Body>
                     </Div>
                   );
                 })
@@ -174,7 +184,7 @@ const RecipeScreen: React.FC = () => {
         </Div>
 
         <Div mt={30} mx={20}>
-          <Heading4 fontWeight="700">Directions</Heading4>
+          <Heading2 fontWeight="700">Directions</Heading2>
           <Div mt={4}>
             {recipe?.instructions?.steps && fullRecipe?.instructions?.steps.length > 0
               ? fullRecipe?.instructions?.steps.map((step, i) => {
@@ -197,13 +207,13 @@ const RecipeScreen: React.FC = () => {
                         mt={14}
                         mr={10}
                       >
-                        <Small position="absolute" lineHeight={0} p={0} color="light">
+                        <SmallHighlight position="absolute" lineHeight={0} p={0} color="light">
                           {i + 1}
-                        </Small>
+                        </SmallHighlight>
                       </Div>
-                      <Paragraph flex={1} py={8}>
+                      <Body flex={1} py={8}>
                         {step}
-                      </Paragraph>
+                      </Body>
                     </Div>
                   );
                 })

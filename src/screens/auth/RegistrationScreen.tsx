@@ -173,8 +173,6 @@ export const RegistrationScreen: React.FC = () => {
           autoCapitalize="none"
           w="100%"
           mb={10}
-          px={10}
-          py={9}
           focusBorderColor="main"
           errorMessage={errors?.email?.message}
           prefix={
@@ -200,8 +198,6 @@ export const RegistrationScreen: React.FC = () => {
           keyboardType="visible-password"
           w="100%"
           mb={10}
-          px={10}
-          py={9}
           secureTextEntry={showPassword}
           focusBorderColor="main"
           errorMessage={errors?.password?.message}

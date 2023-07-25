@@ -163,13 +163,13 @@ export interface Database {
     Views: {
       trending_recipes: {
         Row: {
-          comment_count: number | null
           created_at: string | null
           description: string | null
           hero_img: string | null
           id: string | null
           ingredients: Json | null
           instructions: Json | null
+          saved_count: number | null
           title: string | null
           video: string | null
         }

@@ -87,3 +87,33 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
     isLoading,
   };
 };
+
+export const useRecipeSearch = (searchTerm?: string) => {
+  const [recipes, setRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  console.log('[Log] searchTerm', { searchTerm });
+  useEffect(() => {
+    if (searchTerm === '' || (searchTerm && searchTerm.length >= 3)) fetchSearchData();
+  }, [searchTerm]);
+
+  const fetchSearchData = async () => {
+    setIsLoading(true);
+    supabase
+      .from('trending_recipes')
+      .select()
+      .or(`or(title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%)`)
+      .order('saved_count')
+      .limit(10)
+      .then(({ data, error }) => {
+        if (error || data.length <= 0) {
+          setRecipes([]);
+        } else {
+          setRecipes(data);
+        }
+        setIsLoading(false);
+      });
+  };
+
+  return { recipes, isLoading };
+};

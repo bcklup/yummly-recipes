@@ -1,8 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { memo, useCallback } from 'react';
 import { Button, Div } from 'react-native-magnus';
-import { Heading2, Heading3, Heading4 } from '../../theme/Typography';
-import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { routes } from '../../navigation/routes';
+import { Heading2, Heading3 } from '../../theme/Typography';
 
 type Props = {};
 
