@@ -3,19 +3,28 @@ import React, { memo, useCallback } from 'react';
 import { Button, Div } from 'react-native-magnus';
 import { routes } from '../../navigation/routes';
 import { Heading2, Heading3 } from '../../theme/Typography';
-
+import useMainStore from '../../store/main';
 type Props = {};
 
 const ShortcutWidget: React.FC<Props> = () => {
+  const { session, setAuthModalVisible } = useMainStore();
   const navigation = useNavigation();
 
   const goToSaved = useCallback(() => {
-    navigation.navigate(routes.tabs.saved);
-  }, []);
+    if (!session) {
+      setAuthModalVisible(true);
+    } else {
+      navigation.navigate(routes.tabs.saved);
+    }
+  }, [session]);
 
   const goToRecents = useCallback(() => {
-    navigation.navigate(routes.tabs.account, routes.account.recent);
-  }, []);
+    if (!session) {
+      setAuthModalVisible(true);
+    } else {
+      navigation.navigate(routes.tabs.account, routes.account.recent);
+    }
+  }, [session]);
 
   return (
     <Div mt={28} w="100%">

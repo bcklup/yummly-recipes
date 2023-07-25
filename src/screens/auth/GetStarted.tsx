@@ -20,26 +20,20 @@ const GetStarted = () => {
   const { top } = useSafeAreaInsets();
 
   const handleSkip = useCallback(async () => {
-    try {
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: routes.root }],
-        }),
-      );
-    } catch (e) {}
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: routes.root }],
+      }),
+    );
   }, []);
 
   const handleLogin = useCallback(async () => {
-    try {
-      navigation.navigate(routes.auth.login);
-    } catch (e) {}
+    navigation.navigate(routes.auth.login);
   }, []);
 
   const handleSignUp = useCallback(async () => {
-    try {
-      navigation.navigate(routes.auth.registration);
-    } catch (e) {}
+    navigation.navigate(routes.auth.registration);
   }, []);
 
   return (

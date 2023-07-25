@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { routes } from './routes';
 import GetStarted from '../screens/auth/GetStarted';
@@ -22,6 +22,8 @@ import { theme } from '../theme/theme';
 import RecipeScreen from '../screens/RecipeScreen';
 import SearchRecipeScreen from '../screens/SearchRecipeScreen';
 import RecentRecipesScreen from '../screens/RecentRecipesScreen';
+import AuthBarrierModal from '../components/AuthBarrierModal';
+import useMainStore from '../store/main';
 
 // import { RegistrationScreen } from '../screens/auth/RegistrationScreen';
 
@@ -158,8 +160,17 @@ const RootNavigator = () => {
 };
 
 export const Navigation = () => {
+  const { authModalVisible, setAuthModalVisible } = useMainStore();
+
+  const closeModal = useCallback(
+    (param: boolean) => () => {
+      setAuthModalVisible(param);
+    },
+    [setAuthModalVisible],
+  );
   return (
     <NavigationWithAnalytics theme={defaultTheme} onUnhandledAction={onUnhandledAction}>
+      <AuthBarrierModal isVisible={authModalVisible} handleClose={closeModal(false)} />
       <RootNavigator />
     </NavigationWithAnalytics>
   );

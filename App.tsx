@@ -1,16 +1,12 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
 import { LogBox } from 'react-native';
-import { ThemeProvider, Snackbar, Button, Icon } from 'react-native-magnus';
+import { Snackbar, ThemeProvider } from 'react-native-magnus';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { globalSnackbarRef } from './src/utils/globalSnackbar';
 import { Navigation } from './src/navigation/Navigation';
-import { SplashScreen } from './src/screens/SplashScreen';
-import useMainStore from './src/store/main';
 import { theme } from './src/theme/theme';
-import { useEffect } from 'react';
-import { supabase } from './src/initSupabase';
+import { globalSnackbarRef } from './src/utils/globalSnackbar';
 
 export default function App() {
   LogBox.ignoreAllLogs(); // TODO:L Temporary
