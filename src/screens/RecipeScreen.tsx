@@ -312,7 +312,7 @@ const RecipeScreen: React.FC = () => {
           </Div>
         </Div>
 
-        {fullRecipe && comments.length ? (
+        {fullRecipe && comments ? (
           <CommentsSection recipeId={recipe.id} comments={comments} refresh={fetchFullRecipeData} />
         ) : null}
         <Div h={50} />
