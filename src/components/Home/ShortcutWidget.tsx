@@ -22,7 +22,10 @@ const ShortcutWidget: React.FC<Props> = () => {
     if (!session) {
       setAuthModalVisible(true);
     } else {
-      navigation.navigate(routes.tabs.account, routes.account.recent);
+      navigation.navigate(routes.tabs.account);
+      setTimeout(() => {
+        navigation.navigate(routes.account.recent);
+      }, 200);
     }
   }, [session]);
 

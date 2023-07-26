@@ -93,7 +93,6 @@ export const useRecipeSearch = (searchTerm?: string) => {
   const [recipes, setRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  console.log('[Log] searchTerm', { searchTerm });
   useEffect(() => {
     if (searchTerm === '' || (searchTerm && searchTerm.length >= 3)) fetchSearchData();
   }, [searchTerm]);
@@ -135,6 +134,41 @@ export const useSavedRecipes = () => {
       .select('*, recipes(*, saved(count))')
       .eq('user_id', session?.user.id)
       .order('created_at')
+      .limit(15)
+      .then(({ data, error }) => {
+        console.log('[Log] data', { data });
+        if (error || data.length <= 0) {
+          setRecipes([]);
+        } else {
+          setRecipes(
+            data.map((ret) => ({
+              ...(ret.recipes as Database['public']['Tables']['recipes']['Row']),
+            })),
+          );
+        }
+        setIsLoading(false);
+      });
+  };
+
+  return { recipes, isLoading };
+};
+
+export const useRecentRecipes = () => {
+  const { session } = useMainStore();
+  const [recipes, setRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchRecentsData();
+  }, []);
+
+  const fetchRecentsData = async () => {
+    setIsLoading(true);
+    supabase
+      .from('history')
+      .select('*, recipes(*)')
+      .eq('user_id', session?.user.id)
+      .order('created_at', { ascending: false })
       .limit(15)
       .then(({ data, error }) => {
         console.log('[Log] data', { data });

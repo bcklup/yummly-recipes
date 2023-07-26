@@ -26,7 +26,7 @@ const AccountScreen: React.FC<Props> = () => {
     if (!session) {
       setAuthModalVisible(true);
     } else {
-      navigation.navigate(routes.tabs.account, routes.account.recent);
+      navigation.navigate(routes.account.recent);
     }
   }, [session]);
 
@@ -68,7 +68,7 @@ const AccountScreen: React.FC<Props> = () => {
           It only takes a few minutes to unlock the full features of Yummly Recipes!
         </Body>
 
-        <Button block bg="main" onPress={handleLogin}>
+        <Button block bg="main" onPress={handleLogin} mt={40}>
           <Heading3 fontWeight="500" color="light1">
             LOGIN
           </Heading3>

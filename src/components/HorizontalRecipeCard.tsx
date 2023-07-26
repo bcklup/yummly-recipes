@@ -6,6 +6,7 @@ import { supabase } from '../initSupabase';
 import { routes } from '../navigation/routes';
 import { BodyMedium, Paragraph, Small, SmallHighlight } from '../theme/Typography';
 import { Database } from '../types/supabase';
+import useMainStore from '../store/main';
 
 const placeholderImage = require('../../assets/images/thumb-placeholder.png');
 
@@ -18,9 +19,18 @@ type Props = {
 const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
   console.log('[Log] recipe', { recipe });
   const { navigate } = useNavigation();
+  const { session } = useMainStore();
 
-  const handlePress = useCallback(() => {
+  const handlePress = useCallback(async () => {
     if (recipe) {
+      if (session) {
+        await supabase
+          .from('history')
+          .delete()
+          .eq('recipe_id', recipe.id)
+          .eq('user_id', session.user.id);
+        await supabase.from('history').insert({ user_id: session.user.id, recipe_id: recipe.id! });
+      }
       navigate(routes.home.recipeDetails, { recipe });
     }
   }, [recipe]);
