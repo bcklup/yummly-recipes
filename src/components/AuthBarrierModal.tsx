@@ -59,12 +59,12 @@ const AuthBarrierModal: React.FC<Props> = ({ isVisible, handleClose }) => {
       </Body>
 
       <Button block bg="main" mt={24} onPress={handleLogin}>
-        <Heading3 fontWeight="500" color="light1" mr={20}>
+        <Heading3 fontWeight="500" color="light1">
           LOGIN
         </Heading3>
       </Button>
       <Button block bg="dark" mt={10} onPress={handleSignUp}>
-        <Heading3 fontWeight="500" color="light1" mr={20}>
+        <Heading3 fontWeight="500" color="light1">
           SIGN UP
         </Heading3>
       </Button>

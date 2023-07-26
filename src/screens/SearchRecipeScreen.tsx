@@ -12,8 +12,6 @@ const SearchRecipeScreen: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const { recipes, isLoading } = useRecipeSearch(searchTerm);
 
-  console.log('[Log] recipes, isLoading', { recipes, isLoading });
-
   const Content = useMemo(() => {
     if (isLoading) {
       return (
@@ -65,25 +63,21 @@ const SearchRecipeScreen: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
     >
-      <Div mt={top + 20} flex={1}>
-        <Div bg="light" px={20}>
-          <Input
-            placeholder="Search recipes"
-            w="100%"
-            fontSize="lg"
-            fontWeight="normal"
-            bg="light2"
-            rounded="circle"
-            mb={14}
-            autoCapitalize="none"
-            onChangeText={debouncedResults}
-            prefix={
-              <Icon fontSize="2xl" name="search" color="text" fontFamily="Ionicons" mr={10} />
-            }
-          />
-        </Div>
-        {Content}
+      <Div bg="light" px={20} pt={top + 20}>
+        <Input
+          placeholder="Search recipes"
+          w="100%"
+          fontSize="lg"
+          fontWeight="normal"
+          bg="light2"
+          rounded="circle"
+          mb={14}
+          autoCapitalize="none"
+          onChangeText={debouncedResults}
+          prefix={<Icon fontSize="2xl" name="search" color="text" fontFamily="Ionicons" mr={10} />}
+        />
       </Div>
+      {Content}
     </ScrollDiv>
   );
 };

@@ -16,6 +16,7 @@ type Props = {
 };
 
 const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
+  console.log('[Log] recipe', { recipe });
   const { navigate } = useNavigation();
 
   const handlePress = useCallback(() => {
@@ -63,7 +64,7 @@ const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
           <Div row alignItems="center">
             <Icon color="text5" fontFamily="Octicons" fontSize="lg" name="heart-fill" />
             <Small fontWeight="500" color="text5" ml={6}>
-              {recipe.saved_count}
+              {recipe.saved_count || (recipe.saved && recipe.saved[0]?.count) || 0}
             </Small>
           </Div>
         </Div>

@@ -231,7 +231,7 @@ export const RegistrationScreen: React.FC = () => {
           loading={isLoading}
           onPress={handleSubmit(handleSignUp)}
         >
-          <Heading3 fontWeight="500" color="light1" mr={20}>
+          <Heading3 fontWeight="500" color="light1">
             Continue
           </Heading3>
         </Button>

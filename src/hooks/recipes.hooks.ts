@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../initSupabase';
 import { Database } from '../types/supabase';
+import useMainStore from '../store/main';
 
 export enum FeaturedRecipes {
   LATEST = 'latest',
@@ -110,6 +111,41 @@ export const useRecipeSearch = (searchTerm?: string) => {
           setRecipes([]);
         } else {
           setRecipes(data);
+        }
+        setIsLoading(false);
+      });
+  };
+
+  return { recipes, isLoading };
+};
+
+export const useSavedRecipes = () => {
+  const { session } = useMainStore();
+  const [recipes, setRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchRecentsData();
+  }, []);
+
+  const fetchRecentsData = async () => {
+    setIsLoading(true);
+    supabase
+      .from('saved')
+      .select('*, recipes(*, saved(count))')
+      .eq('user_id', session?.user.id)
+      .order('created_at')
+      .limit(15)
+      .then(({ data, error }) => {
+        console.log('[Log] data', { data });
+        if (error || data.length <= 0) {
+          setRecipes([]);
+        } else {
+          setRecipes(
+            data.map((ret) => ({
+              ...(ret.recipes as Database['public']['Tables']['recipes']['Row']),
+            })),
+          );
         }
         setIsLoading(false);
       });

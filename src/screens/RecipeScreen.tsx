@@ -2,8 +2,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Div, Icon, Button as MagnusButton, ScrollDiv } from 'react-native-magnus';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { ResizeMode, Video } from 'expo-av';
 import { format } from 'date-fns';
+
 import { supabase } from '../initSupabase';
 import {
   Body,
@@ -17,7 +18,9 @@ import {
 } from '../theme/Typography';
 import { Database } from '../types/supabase';
 import { DateTimeFormats } from '../utils/parsers';
-import { ResizeMode, Video } from 'expo-av';
+import useMainStore from '../store/main';
+import { globalSnackbarRef } from '../utils/globalSnackbar';
+import { ActivityIndicator } from 'react-native';
 
 const placeholderImage = require('../../assets/images/thumb-placeholder.png');
 
@@ -25,9 +28,12 @@ const RecipeScreen: React.FC = () => {
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { top } = useSafeAreaInsets();
+  const { session, setAuthModalVisible } = useMainStore();
   const [fullRecipe, setFullRecipe] = useState<
     Database['public']['Tables']['recipes']['Row'] | undefined
   >();
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Database['public']['Tables']['comments']['Row'][]>([]);
   const [savedCount, setSavedCount] = useState<number>(0);
   const recipe = useMemo(() => fullRecipe || params?.recipe || undefined, [params, fullRecipe]);
@@ -35,8 +41,9 @@ const RecipeScreen: React.FC = () => {
   useEffect(() => {
     if (recipe && recipe.id) {
       fetchFullRecipeData();
+      fetchIsSaved();
     }
-  }, [params?.recipe]);
+  }, [params?.recipe, isSaved]);
 
   const fetchFullRecipeData = async () => {
     supabase
@@ -46,7 +53,7 @@ const RecipeScreen: React.FC = () => {
       )
       .eq('id', recipe.id)
       .limit(1)
-      .single()
+      .maybeSingle()
       .then(({ data, error }) => {
         console.log('[Log] data', { data });
         if (error || !data) {
@@ -59,6 +66,26 @@ const RecipeScreen: React.FC = () => {
           setSavedCount(data.saved[0].count || 0);
         }
       });
+  };
+
+  const fetchIsSaved = async () => {
+    if (session && recipe) {
+      supabase
+        .from('saved')
+        .select()
+        .eq('recipe_id', recipe.id)
+        .eq('user_id', session?.user.id)
+        .limit(1)
+        .single()
+        .then(({ error }) => {
+          if (!error) {
+            setIsSaved(true);
+          } else {
+            console.log('[Log] fetchIsSaved error', { error });
+            setIsSaved(false);
+          }
+        });
+    }
   };
 
   const recipePhoto = useMemo(
@@ -82,9 +109,41 @@ const RecipeScreen: React.FC = () => {
     goBack();
   }, [goBack]);
 
-  const handleSave = useCallback(() => {
-    goBack();
-  }, [goBack]);
+  const handleSave = useCallback(async () => {
+    if (!session) {
+      setAuthModalVisible(true);
+    } else {
+      if (isSaved) {
+        supabase
+          .from('saved')
+          .delete()
+          .eq('recipe_id', recipe.id)
+          .eq('user_id', session.user.id)
+          .then(({ error }) => {
+            if (!error) {
+              setIsSaved(false);
+            } else {
+              console.log('[Log] error', { error });
+              globalSnackbarRef.current?.show('Error. Please try again later.');
+            }
+          });
+      } else {
+        supabase
+          .from('saved')
+          .insert({
+            recipe_id: recipe.id,
+            user_id: session.user.id,
+          })
+          .then(({ error }) => {
+            if (!error) {
+              setIsSaved(true);
+            } else {
+              globalSnackbarRef.current?.show('Error. Please try again later.');
+            }
+          });
+      }
+    }
+  }, [session, isSaved]);
 
   if (!recipe) return <></>;
   return (
@@ -99,7 +158,12 @@ const RecipeScreen: React.FC = () => {
 
           <Div mx={24}>
             <MagnusButton onPress={handleSave} bg="light" rounded="circle" p={8}>
-              <Icon color="text" fontFamily="Octicons" fontSize="3xl" name="heart" />
+              <Icon
+                color={!isSaved || !session ? 'text' : 'main'}
+                fontFamily="Octicons"
+                fontSize="3xl"
+                name={!isSaved || !session ? 'heart' : 'heart-fill'}
+              />
             </MagnusButton>
           </Div>
         </Div>
@@ -139,7 +203,12 @@ const RecipeScreen: React.FC = () => {
 
         {recipe.video ? (
           <Div mt={14} px={20} pt={14} pb={24} bg="light" shadow="md" shadowColor="dark5">
-            <Div flex={1}>
+            <Div flex={1} position="relative">
+              {isVideoLoading ? (
+                <Div position="absolute" top={90} alignSelf="center" zIndex={3}>
+                  <ActivityIndicator />
+                </Div>
+              ) : null}
               <Video
                 // ref={video}
                 style={{
@@ -150,6 +219,9 @@ const RecipeScreen: React.FC = () => {
                 }}
                 source={{
                   uri: recipe?.video,
+                }}
+                onLoad={() => {
+                  setIsVideoLoading(false);
                 }}
                 useNativeControls
                 resizeMode={ResizeMode.CONTAIN}

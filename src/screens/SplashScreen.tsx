@@ -39,7 +39,7 @@ export const SplashScreen: React.FC = () => {
 
             setProfile(!error && profileData ? profileData[0] : null);
 
-            navigation.dispatch(StackActions.replace(routes.home.dashboard));
+            navigation.dispatch(StackActions.replace(routes.root));
           } else throw new Error('Session is null');
         })
         .catch(() => {

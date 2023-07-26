@@ -12,21 +12,9 @@ import useMainStore from '../store/main';
 import { BodyMedium, Heading1, Highlight } from '../theme/Typography';
 
 const HomeScreen: React.FC = () => {
-  const { session, clearSession, profile } = useMainStore();
+  const { session, profile } = useMainStore();
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
-
-  const logout = useCallback(() => {
-    supabase.auth.signOut().then(() => {
-      clearSession();
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: routes.auth.getStarted }],
-        }),
-      );
-    });
-  }, []);
 
   const goToSearch = useCallback(() => {
     navigation.navigate(routes.tabs.search);
