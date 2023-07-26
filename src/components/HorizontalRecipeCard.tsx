@@ -38,7 +38,7 @@ const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
   const recipePhoto = useMemo(
     () =>
       recipe.hero_img
-        ? supabase.storage.from('recipe_photos').getPublicUrl(`thumb/${recipe.hero_img}.jpeg`).data
+        ? supabase.storage.from('recipe_photos').getPublicUrl(`thumb/${recipe.hero_img}`).data
             .publicUrl
         : undefined,
     [recipe.hero_img],

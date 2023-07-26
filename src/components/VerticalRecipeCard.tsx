@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Div, Image } from 'react-native-magnus';
+import { Button, Div, Icon, Image } from 'react-native-magnus';
 import { Database } from '../types/supabase';
-import { BodyHeavy, BodyMedium, Highlight } from '../theme/Typography';
+import { Body, BodyHeavy, BodyMedium, Highlight, Small } from '../theme/Typography';
 import { supabase } from '../initSupabase';
 import { Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +36,7 @@ const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
   const recipePhoto = useMemo(
     () =>
       recipe.hero_img
-        ? supabase.storage.from('recipe_photos').getPublicUrl(`thumb/${recipe.hero_img}.jpeg`).data
+        ? supabase.storage.from('recipe_photos').getPublicUrl(`thumb/${recipe.hero_img}`).data
             .publicUrl
         : undefined,
     [recipe.hero_img],
@@ -45,24 +45,32 @@ const VerticalRecipeCard: React.FC<Props> = ({ recipe }) => {
   if (!recipe) return <></>;
 
   return (
-    <Pressable style={{ maxWidth: 120 }} onPress={handlePress}>
-      <Image
-        source={
-          recipePhoto
-            ? {
-                uri: recipePhoto || '',
-              }
-            : placeholderImage
-        }
-        resizeMode="cover"
-        rounded="xl"
-        w={140}
-        h={170}
-      />
-      <BodyMedium ml={4} fontWeight="600" mt={8} ellipsizeMode="tail" numberOfLines={2}>
-        {recipe.title}
-      </BodyMedium>
-    </Pressable>
+    <Button py={0} pl={0} pr={24} bg="transparent" onPress={handlePress}>
+      <Div>
+        <Image
+          source={
+            recipePhoto
+              ? {
+                  uri: recipePhoto || '',
+                }
+              : placeholderImage
+          }
+          resizeMode="cover"
+          rounded="xl"
+          w={140}
+          h={170}
+        />
+        <Body fontWeight="600" ellipsizeMode="tail" numberOfLines={2}>
+          {recipe.title}
+        </Body>
+        <Div row alignItems="center">
+          <Icon color="text5" fontFamily="Octicons" fontSize="lg" name="heart-fill" />
+          <Small fontWeight="500" color="text5" ml={6}>
+            {recipe.saved_count || (recipe.saved && recipe.saved[0]?.count) || 0}
+          </Small>
+        </Div>
+      </Div>
+    </Button>
   );
 };
 

@@ -1,16 +1,23 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { Div, ScrollDiv } from 'react-native-magnus';
 import { FeaturedRecipes, useFeaturedRecipes } from '../../hooks/recipes.hooks';
 import { Body, Heading2 } from '../../theme/Typography';
 import VerticalRecipeCard from '../VerticalRecipeCard';
+import { useFocusEffect } from '@react-navigation/native';
+import { refresh } from '@react-native-community/netinfo';
 
 type Props = {
   type: FeaturedRecipes;
+  refresh: boolean;
 };
 
-const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
-  const { recipes, isLoading } = useFeaturedRecipes(type);
+const FeaturedRecipesWidget: React.FC<Props> = ({ type, refresh }) => {
+  const { recipes, isLoading, refetch } = useFeaturedRecipes(type);
+
+  useEffect(() => {
+    refetch();
+  }, [refresh, type]);
 
   const title = useMemo(() => {
     switch (type) {

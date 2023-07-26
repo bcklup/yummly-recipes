@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../initSupabase';
 import { Database } from '../types/supabase';
 import useMainStore from '../store/main';
@@ -32,12 +32,28 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
     }
   }, [type]);
 
+  const refetch = () => {
+    switch (type) {
+      case FeaturedRecipes.LATEST: {
+        fetchLatestData();
+        break;
+      }
+      case FeaturedRecipes.TRENDING: {
+        fetchTrendingData();
+        break;
+      }
+      case FeaturedRecipes.BREAKFAST: {
+        fetchBreakfastData();
+      }
+    }
+  };
+
   const fetchLatestData = async () => {
     setIsLoading(true);
     supabase
       .from('recipes')
-      .select()
-      .order('created_at')
+      .select('*, saved(count)')
+      .order('created_at', { ascending: false })
       .limit(5)
       .then(({ data, error }) => {
         if (error || data.length <= 0) {
@@ -69,7 +85,7 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
     setIsLoading(true);
     supabase
       .from('recipes')
-      .select()
+      .select('*, saved(count)')
       .in('id', ['4024b37a-cc8a-492f-9bb8-350cd620a045'])
       .order('created_at')
       .limit(5)
@@ -86,6 +102,7 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
   return {
     recipes,
     isLoading,
+    refetch,
   };
 };
 
