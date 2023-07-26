@@ -20,7 +20,8 @@ import { Database } from '../types/supabase';
 import { DateTimeFormats } from '../utils/parsers';
 import useMainStore from '../store/main';
 import { globalSnackbarRef } from '../utils/globalSnackbar';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, RefreshControl } from 'react-native';
+import CommentsSection from '../components/CommentsSection';
 
 const placeholderImage = require('../../assets/images/thumb-placeholder.png');
 
@@ -33,10 +34,13 @@ const RecipeScreen: React.FC = () => {
     Database['public']['Tables']['recipes']['Row'] | undefined
   >();
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Database['public']['Tables']['comments']['Row'][]>([]);
   const [savedCount, setSavedCount] = useState<number>(0);
   const recipe = useMemo(() => fullRecipe || params?.recipe || undefined, [params, fullRecipe]);
+
+  console.log('[Log] comments', { comments });
 
   useEffect(() => {
     if (recipe && recipe.id) {
@@ -46,11 +50,10 @@ const RecipeScreen: React.FC = () => {
   }, [params?.recipe, isSaved]);
 
   const fetchFullRecipeData = async () => {
+    setIsLoading(true);
     supabase
       .from(`recipes`)
-      .select(
-        `*, saved(count), comments(id, comment, is_approved, profiles(id, first_name, last_name))`,
-      )
+      .select(`*, saved(count), comments(*, profiles(id, first_name, last_name))`)
       .eq('id', recipe.id)
       .limit(1)
       .maybeSingle()
@@ -65,6 +68,7 @@ const RecipeScreen: React.FC = () => {
           setComments(data.comments);
           setSavedCount(data.saved[0].count || 0);
         }
+        setIsLoading(false);
       });
   };
 
@@ -147,7 +151,12 @@ const RecipeScreen: React.FC = () => {
 
   if (!recipe) return <></>;
   return (
-    <ScrollDiv flex={1} bg="light" contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollDiv
+      flex={1}
+      bg="light"
+      contentContainerStyle={{ flexGrow: 1 }}
+      refreshControl={<RefreshControl onRefresh={fetchFullRecipeData} refreshing={isLoading} />}
+    >
       <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={330} w="100%">
         <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top}>
           <Div mx={24}>
@@ -292,6 +301,10 @@ const RecipeScreen: React.FC = () => {
               : null}
           </Div>
         </Div>
+
+        {fullRecipe && comments.length ? (
+          <CommentsSection recipeId={recipe.id} comments={comments} refresh={fetchFullRecipeData} />
+        ) : null}
         <Div h={50} />
       </Div>
     </ScrollDiv>
