@@ -10,6 +10,7 @@ import GradientDiv from '../../components/GradientDiv';
 import { Heading4 } from '../../theme/Typography';
 import { theme } from '../../theme/theme';
 import { colorWithOpacity } from '../../utils/utilsCommon';
+import { StatusBar } from 'expo-status-bar';
 
 const textLogo = require('../../../assets/logo-text.png');
 const hero = require('../../../assets/images/welcome-hero.png');
@@ -38,6 +39,7 @@ const GetStarted = () => {
 
   return (
     <Div style={{ flex: 1 }}>
+      <StatusBar translucent backgroundColor="transparent" />
       <ImageBackground source={hero} resizeMode="cover" style={{ flex: 2, width: '100%' }}>
         <GradientDiv
           flex={2}

@@ -99,7 +99,7 @@ const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
                     p={4}
                     onPress={deleteComment(comment.id)}
                   >
-                    <Icon name="trash-2" fontFamily="Feather" color="main" fontSize="xl" />
+                    <Icon name="trash-2" fontFamily="Feather" color="main" fontSize="3xl" />
                   </MagnusButton>
                 ) : null}
               </Div>

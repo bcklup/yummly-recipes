@@ -35,6 +35,7 @@ const RecipeScreen: React.FC = () => {
     Database['public']['Tables']['recipes']['Row'] | undefined
   >();
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [isVideoFullscreen, setIsVideoFullscreen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Database['public']['Tables']['comments']['Row'][]>([]);
@@ -158,7 +159,10 @@ const RecipeScreen: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={<RefreshControl onRefresh={fetchFullRecipeData} refreshing={isLoading} />}
     >
-      <StatusBar translucent={true} backgroundColor="transparent" />
+      <StatusBar
+        translucent={!isVideoFullscreen}
+        backgroundColor={isVideoFullscreen ? 'black' : 'transparent'}
+      />
       <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={360} w="100%">
         <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top + 10}>
           <Div mx={24}>
@@ -197,9 +201,9 @@ const RecipeScreen: React.FC = () => {
             <Div row alignItems="center" justifyContent="center">
               <Icon color="main" fontFamily="Octicons" fontSize="4xl" name="heart-fill" />
               {savedCount ? (
-                <Highlight color="main" ml={6}>
+                <Body color="main" ml={6}>
                   {savedCount}
-                </Highlight>
+                </Body>
               ) : null}
             </Div>
           </Div>
@@ -233,6 +237,9 @@ const RecipeScreen: React.FC = () => {
                 }}
                 onLoad={() => {
                   setIsVideoLoading(false);
+                }}
+                onFullscreenUpdate={() => {
+                  setIsVideoFullscreen(!isVideoFullscreen);
                 }}
                 useNativeControls
                 resizeMode={ResizeMode.CONTAIN}
@@ -281,16 +288,17 @@ const RecipeScreen: React.FC = () => {
                       alignItems="flex-start"
                     >
                       <Div
+                        position="relative"
                         rounded="circle"
                         bg="dark"
-                        p={10}
+                        p={14}
                         position="relative"
                         justifyContent="center"
                         alignItems="center"
                         mt={14}
                         mr={10}
                       >
-                        <SmallHighlight position="absolute" lineHeight={0} p={0} color="light">
+                        <SmallHighlight position="absolute" p={0} color="light">
                           {i + 1}
                         </SmallHighlight>
                       </Div>

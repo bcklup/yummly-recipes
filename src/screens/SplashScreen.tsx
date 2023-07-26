@@ -10,6 +10,7 @@ import { routes } from '../navigation/routes';
 import { Tokens } from '../constants/namespaces';
 import useMainStore from '../store/main';
 import { supabase } from '../initSupabase';
+import { StatusBar } from 'expo-status-bar';
 
 const splash = require('../../assets/splash.png');
 
@@ -53,5 +54,9 @@ export const SplashScreen: React.FC = () => {
     startup();
   }, []);
 
-  return <ImageBackground source={splash} style={{ flex: 1 }}></ImageBackground>;
+  return (
+    <ImageBackground source={splash} style={{ flex: 1 }}>
+      <StatusBar translucent backgroundColor="transparent" />
+    </ImageBackground>
+  );
 };
