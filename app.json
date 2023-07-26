@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "YummlyRecipes",
+    "name": "Yummly Recipes",
     "slug": "YummlyRecipes",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.bcklup.YummlyRecipes"
+      "package": "com.bcklup.YummlyRecipes",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,6 +33,12 @@
       "eas": {
         "projectId": "4753a986-3e94-4570-88e1-9ada104b59d4"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4753a986-3e94-4570-88e1-9ada104b59d4"
     }
   }
 }

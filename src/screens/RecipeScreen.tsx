@@ -158,7 +158,7 @@ const RecipeScreen: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={<RefreshControl onRefresh={fetchFullRecipeData} refreshing={isLoading} />}
     >
-      <StatusBar translucent={true} />
+      <StatusBar translucent={true} backgroundColor="transparent" />
       <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={360} w="100%">
         <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top + 10}>
           <Div mx={24}>

@@ -4,6 +4,7 @@
   },
   "build": {
     "development": {
+      "channel": "internal",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
@@ -14,15 +15,19 @@
       "autoIncrement": true
     },
     "preview": {
+      "channel": "internal",
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
       },
       "android": {
         "buildType": "apk"
-      }
+      },
+      "autoIncrement": true
     },
-    "production": {}
+    "production": {
+      "channel": "production"
+    }
   },
   "submit": {
     "production": {}
