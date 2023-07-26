@@ -22,6 +22,7 @@ import useMainStore from '../store/main';
 import { globalSnackbarRef } from '../utils/globalSnackbar';
 import { ActivityIndicator, RefreshControl } from 'react-native';
 import CommentsSection from '../components/CommentsSection';
+import { StatusBar } from 'expo-status-bar';
 
 const placeholderImage = require('../../assets/images/thumb-placeholder.png');
 
@@ -157,8 +158,9 @@ const RecipeScreen: React.FC = () => {
       contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={<RefreshControl onRefresh={fetchFullRecipeData} refreshing={isLoading} />}
     >
-      <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={330} w="100%">
-        <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top}>
+      <StatusBar translucent={true} />
+      <Div bgImg={recipePhoto ? { uri: recipePhoto } : placeholderImage} h={360} w="100%">
+        <Div row w="100%" alignItems="center" justifyContent="space-between" mt={top + 10}>
           <Div mx={24}>
             <MagnusButton onPress={handleBack} bg="light" rounded="circle" p={6}>
               <Icon color="text" fontFamily="AntDesign" fontSize="4xl" name="arrowleft" />

@@ -48,7 +48,7 @@ const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
 
   return (
     <Pressable onPress={handlePress}>
-      <Div row my={8} maxH={200} px={20} py={10} bg="light" alignItems="center">
+      <Div row my={8} px={20} py={10} bg="light" alignItems="center">
         <Image
           source={
             recipePhoto
