@@ -37,28 +37,6 @@ const SavedRecipesScreen: React.FC<Props> = () => {
   }, []);
 
   const Content = useMemo(() => {
-    if (!session) {
-      return (
-        <Div flex={1} bg="light" justifyContent="center" alignItems="center" mx={24}>
-          <Heading1Heavy>You are not logged in</Heading1Heavy>
-          <Body color="text4" textAlign="center">
-            It only takes a few minutes to unlock the full features of Yummly Recipes!
-          </Body>
-
-          <Button block bg="main" onPress={handleLogin} mt={40}>
-            <Heading3 fontWeight="500" color="light1">
-              LOGIN
-            </Heading3>
-          </Button>
-          <Button block bg="dark" onPress={handleSignUp} mt={10}>
-            <Heading3 fontWeight="500" color="light1">
-              SIGN UP
-            </Heading3>
-          </Button>
-        </Div>
-      );
-    }
-
     if (isLoading) {
       return (
         <Div bg="light" flex={1} justifyContent="center" alignItems="center">
@@ -85,6 +63,29 @@ const SavedRecipesScreen: React.FC<Props> = () => {
       </ScrollDiv>
     );
   }, [recipes, isLoading]);
+
+  if (!session) {
+    return (
+      <Div flex={1} bg="light" justifyContent="center" alignItems="center" mx={24}>
+        <Heading1Heavy>You are not logged in</Heading1Heavy>
+        <Body color="text4" textAlign="center">
+          It only takes a few minutes to unlock the full features of Yummly Recipes!
+        </Body>
+        <Div w="80%">
+          <Button block bg="main" onPress={handleLogin} mt={40}>
+            <Heading3 fontWeight="500" color="light1">
+              LOGIN
+            </Heading3>
+          </Button>
+          <Button block bg="dark" onPress={handleSignUp} mt={10}>
+            <Heading3 fontWeight="500" color="light1">
+              SIGN UP
+            </Heading3>
+          </Button>
+        </Div>
+      </Div>
+    );
+  }
 
   return (
     <Div flex={1}>

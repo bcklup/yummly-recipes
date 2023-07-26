@@ -68,16 +68,18 @@ const AccountScreen: React.FC<Props> = () => {
           It only takes a few minutes to unlock the full features of Yummly Recipes!
         </Body>
 
-        <Button block bg="main" onPress={handleLogin} mt={40}>
-          <Heading3 fontWeight="500" color="light1">
-            LOGIN
-          </Heading3>
-        </Button>
-        <Button block bg="dark" onPress={handleSignUp} mt={10}>
-          <Heading3 fontWeight="500" color="light1">
-            SIGN UP
-          </Heading3>
-        </Button>
+        <Div w="80%">
+          <Button block bg="main" onPress={handleLogin} mt={40}>
+            <Heading3 fontWeight="500" color="light1">
+              LOGIN
+            </Heading3>
+          </Button>
+          <Button block bg="dark" onPress={handleSignUp} mt={10}>
+            <Heading3 fontWeight="500" color="light1">
+              SIGN UP
+            </Heading3>
+          </Button>
+        </Div>
       </Div>
     );
   }
