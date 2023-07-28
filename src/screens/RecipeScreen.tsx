@@ -42,8 +42,6 @@ const RecipeScreen: React.FC = () => {
   const [savedCount, setSavedCount] = useState<number>(0);
   const recipe = useMemo(() => fullRecipe || params?.recipe || undefined, [params, fullRecipe]);
 
-  console.log('[Log] comments', { comments });
-
   useEffect(() => {
     if (recipe && recipe.id) {
       fetchFullRecipeData();
@@ -67,7 +65,7 @@ const RecipeScreen: React.FC = () => {
           setSavedCount(0);
         } else {
           setFullRecipe(data);
-          setComments(data.comments);
+          setComments(data.comments.filter((x) => x.is_approved));
           setSavedCount(data.saved[0].count || 0);
         }
         setIsLoading(false);

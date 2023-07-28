@@ -5,7 +5,6 @@ import { useForm, useFormState } from 'react-hook-form';
 import { Div, Icon, ScrollDiv } from 'react-native-magnus';
 import * as yup from 'yup';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { Keyboard, Pressable } from 'react-native';
 
 import Button from '../../components/Button';
@@ -22,7 +21,6 @@ export const LoginScreen: React.FC = () => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const queryClient = useQueryClient();
   const { setSession, setProfile } = useMainStore();
 
   const schema = yup
@@ -38,10 +36,6 @@ export const LoginScreen: React.FC = () => {
   });
 
   const { isValid, errors } = useFormState({ control });
-
-  useEffect(() => {
-    queryClient.clear();
-  }, []);
 
   const handleForgot = useCallback(async () => {
     navigation.dispatch(StackActions.replace(routes.auth.resetPasswordRequest));

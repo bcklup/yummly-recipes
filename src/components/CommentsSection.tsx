@@ -10,6 +10,7 @@ import Button from './Button';
 import { supabase } from '../initSupabase';
 import { globalSnackbarRef } from '../utils/globalSnackbar';
 import { Pressable } from 'react-native';
+import { theme } from '../theme/theme';
 
 type Props = {
   recipeId: string;
@@ -18,7 +19,7 @@ type Props = {
 };
 
 const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
-  const { session, setAuthModalVisible } = useMainStore();
+  const { session, setAuthModalVisible, profile } = useMainStore();
   const [showComments, setShowComments] = useState<boolean>(false);
   const [isAddModalShown, setShowAddModal] = useState<boolean>(false);
   const [commentText, setCommentText] = useState<string>('');
@@ -48,6 +49,7 @@ const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
         comment: commentText,
         user_id: session?.user.id!,
         recipe_id: recipeId,
+        is_approved: profile?.is_admin,
       });
 
       setIsSubmitting(false);
@@ -55,11 +57,24 @@ const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
       if (!error) {
         refresh();
         handleCloseAddModal();
+        if (profile?.is_admin) {
+          globalSnackbarRef.current?.show('Comment added!', {
+            color: 'white',
+            bg: 'main',
+            opacity: 1,
+            duration: 2500,
+          });
+        } else {
+          globalSnackbarRef.current?.show(
+            'Comment submitted! This will be reviewed by an admin for approval.',
+            { color: 'white', bg: 'main', opacity: 1, duration: 2500 },
+          );
+        }
       } else {
         globalSnackbarRef.current?.show('Error occured. Please try again');
       }
     }
-  }, [commentText, recipeId]);
+  }, [commentText, recipeId, profile]);
 
   const deleteComment = useCallback(
     (commentId: any) => async () => {
