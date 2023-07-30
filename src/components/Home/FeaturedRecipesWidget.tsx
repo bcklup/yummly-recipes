@@ -4,16 +4,15 @@ import { Div, ScrollDiv } from 'react-native-magnus';
 import { FeaturedRecipes, useFeaturedRecipes } from '../../hooks/recipes.hooks';
 import { Body, Heading2 } from '../../theme/Typography';
 import VerticalRecipeCard from '../VerticalRecipeCard';
-import { useFocusEffect } from '@react-navigation/native';
-import { refresh } from '@react-native-community/netinfo';
+import useMainStore from '../../store/main';
 
 type Props = {
   type: FeaturedRecipes;
-  refresh: boolean;
 };
 
-const FeaturedRecipesWidget: React.FC<Props> = ({ type, refresh }) => {
+const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
   const { recipes, isLoading, refetch } = useFeaturedRecipes(type);
+  const { refresh } = useMainStore();
 
   useEffect(() => {
     refetch();

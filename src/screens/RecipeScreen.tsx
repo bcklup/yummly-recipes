@@ -30,7 +30,7 @@ const RecipeScreen: React.FC = () => {
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { top } = useSafeAreaInsets();
-  const { session, setAuthModalVisible } = useMainStore();
+  const { session, setAuthModalVisible, refresh, setRefresh } = useMainStore();
   const [fullRecipe, setFullRecipe] = useState<
     Database['public']['Tables']['recipes']['Row'] | undefined
   >();
@@ -122,6 +122,7 @@ const RecipeScreen: React.FC = () => {
           .then(({ error }) => {
             if (!error) {
               setIsSaved(false);
+              setRefresh(!refresh);
             } else {
               globalSnackbarRef.current?.show('Error. Please try again later.');
             }
@@ -136,13 +137,14 @@ const RecipeScreen: React.FC = () => {
           .then(({ error }) => {
             if (!error) {
               setIsSaved(true);
+              setRefresh(!refresh);
             } else {
               globalSnackbarRef.current?.show('Error. Please try again later.');
             }
           });
       }
     }
-  }, [session, isSaved]);
+  }, [session, isSaved, refresh, setRefresh]);
 
   if (!recipe) return <></>;
   return (

@@ -136,13 +136,13 @@ export const useRecipeSearch = (searchTerm?: string) => {
 };
 
 export const useSavedRecipes = () => {
-  const { session } = useMainStore();
+  const { session, refresh } = useMainStore();
   const [recipes, setRecipes] = useState<Database['public']['Tables']['recipes']['Row'][]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetchRecentsData();
-  }, []);
+  }, [refresh]);
 
   const fetchRecentsData = async () => {
     setIsLoading(true);

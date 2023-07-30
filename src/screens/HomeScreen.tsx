@@ -12,10 +12,9 @@ import useMainStore from '../store/main';
 import { BodyMedium, Heading1 } from '../theme/Typography';
 
 const HomeScreen: React.FC = () => {
-  const { session, profile } = useMainStore();
+  const { refresh, setRefresh, session, profile } = useMainStore();
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
-  const [refresh, setRefresh] = useState<boolean>(false);
 
   const goToSearch = useCallback(() => {
     navigation.navigate(routes.tabs.search);
@@ -55,9 +54,9 @@ const HomeScreen: React.FC = () => {
         <BodyMedium color="text5">Search any recipes</BodyMedium>
       </MagnusButton>
 
-      <FeaturedRecipesWidget refresh={refresh} type={FeaturedRecipes.LATEST} />
-      <FeaturedRecipesWidget refresh={refresh} type={FeaturedRecipes.TRENDING} />
-      <FeaturedRecipesWidget refresh={refresh} type={FeaturedRecipes.BREAKFAST} />
+      <FeaturedRecipesWidget type={FeaturedRecipes.LATEST} />
+      <FeaturedRecipesWidget type={FeaturedRecipes.TRENDING} />
+      <FeaturedRecipesWidget type={FeaturedRecipes.BREAKFAST} />
       <ShortcutWidget />
       <Div h={50} />
     </ScrollDiv>

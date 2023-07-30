@@ -8,12 +8,14 @@ import { Database } from '../types/supabase';
 interface States {
   session: Session | null;
   profile: Database['public']['Tables']['profiles']['Row'] | null;
+  refresh: boolean;
   authModalVisible: boolean;
 }
 
 interface Actions {
   setSession: (param: Session | null) => void;
   setProfile: (param: States['profile']) => void;
+  setRefresh: (param: boolean) => void;
   clearSession: () => void;
   setAuthModalVisible: (param: boolean) => void;
 }
@@ -21,6 +23,7 @@ interface Actions {
 const initialState: States = {
   session: null,
   profile: null,
+  refresh: false,
   authModalVisible: false,
 };
 
@@ -30,6 +33,7 @@ export default create<States & Actions>()(
       ...initialState,
       setSession: (param) => set((state) => ({ ...state, session: param })),
       setProfile: (param) => set((state) => ({ ...state, profile: param })),
+      setRefresh: (param) => set((state) => ({ ...state, refresh: param })),
       setAuthModalVisible: (param) => set((state) => ({ ...state, authModalVisible: param })),
       clearSession: () => set(() => ({ ...initialState })),
     }),
