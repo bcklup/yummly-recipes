@@ -58,7 +58,6 @@ const RecipeScreen: React.FC = () => {
       .limit(1)
       .maybeSingle()
       .then(({ data, error }) => {
-        console.log('[Log] data', { data });
         if (error || !data) {
           setFullRecipe(undefined);
           setComments([]);
@@ -76,16 +75,13 @@ const RecipeScreen: React.FC = () => {
     if (session && recipe) {
       supabase
         .from('saved')
-        .select()
+        .select('*', { count: 'exact', head: true })
         .eq('recipe_id', recipe.id)
         .eq('user_id', session?.user.id)
-        .limit(1)
-        .single()
-        .then(({ error }) => {
-          if (!error) {
+        .then(({ error, count, data }) => {
+          if (!error && count && count > 0) {
             setIsSaved(true);
           } else {
-            console.log('[Log] fetchIsSaved error', { error });
             setIsSaved(false);
           }
         });
@@ -127,7 +123,6 @@ const RecipeScreen: React.FC = () => {
             if (!error) {
               setIsSaved(false);
             } else {
-              console.log('[Log] error', { error });
               globalSnackbarRef.current?.show('Error. Please try again later.');
             }
           });

@@ -97,7 +97,7 @@ const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
         {comments.map((comment) => {
           const isMyComment = session && comment.user_id === session?.user.id;
           return (
-            <Div py={10} borderBottomColor="gray400" borderBottomWidth={1}>
+            <Div py={10} borderBottomColor="gray400" borderBottomWidth={1} key={comment.id}>
               <Div row alignItems="flex-start">
                 <Div flex={1}>
                   <BodyMedium>

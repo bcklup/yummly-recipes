@@ -17,7 +17,6 @@ type Props = {
 };
 
 const HorizontalRecipeCard: React.FC<Props> = ({ recipe }) => {
-  console.log('[Log] recipe', { recipe });
   const { navigate } = useNavigation();
   const { session } = useMainStore();
 

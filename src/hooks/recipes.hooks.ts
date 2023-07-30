@@ -153,7 +153,6 @@ export const useSavedRecipes = () => {
       .order('created_at')
       .limit(15)
       .then(({ data, error }) => {
-        console.log('[Log] data', { data });
         if (error || data.length <= 0) {
           setRecipes([]);
         } else {
@@ -188,7 +187,6 @@ export const useRecentRecipes = () => {
       .order('created_at', { ascending: false })
       .limit(15)
       .then(({ data, error }) => {
-        console.log('[Log] data', { data });
         if (error || data.length <= 0) {
           setRecipes([]);
         } else {

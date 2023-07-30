@@ -22,7 +22,6 @@ const HomeScreen: React.FC = () => {
   }, []);
 
   const handleRefresh = () => {
-    console.log('[Log] refresh', { refresh });
     setRefresh(!refresh);
   };
 

@@ -76,7 +76,7 @@ export const RegistrationScreen: React.FC = () => {
         setSession(resData.session);
 
         // handle update user data
-        const { error: error2, data: resData2 } = await supabase.from('profiles').upsert({
+        const { error: error2, data: resData2 } = await supabase.from('profiles').insert({
           user_id: resData?.session.user.id,
           first_name: data.firstName,
           last_name: data.lastName,
@@ -87,6 +87,8 @@ export const RegistrationScreen: React.FC = () => {
           .from('profiles')
           .select()
           .eq('user_id', resData.session.user.id);
+
+        // console.log('[Log] profileData, profileError', { profileData, profileError });
 
         setProfile(!profileError && profileData ? profileData[0] : null);
 
