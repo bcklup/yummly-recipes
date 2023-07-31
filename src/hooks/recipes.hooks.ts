@@ -6,7 +6,7 @@ import useMainStore from '../store/main';
 export enum FeaturedRecipes {
   LATEST = 'latest',
   TRENDING = 'trending',
-  BREAKFAST = 'breakfast',
+  FESTIVE = 'festive',
 }
 
 export const useFeaturedRecipes = (type: FeaturedRecipes) => {
@@ -26,7 +26,7 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
         fetchTrendingData();
         break;
       }
-      case FeaturedRecipes.BREAKFAST: {
+      case FeaturedRecipes.FESTIVE: {
         fetchBreakfastData();
       }
     }
@@ -42,7 +42,7 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
         fetchTrendingData();
         break;
       }
-      case FeaturedRecipes.BREAKFAST: {
+      case FeaturedRecipes.FESTIVE: {
         fetchBreakfastData();
       }
     }
@@ -86,7 +86,11 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
     supabase
       .from('recipes')
       .select('*, saved(count)')
-      .in('id', ['4024b37a-cc8a-492f-9bb8-350cd620a045'])
+      .in('id', [
+        '5b4bac8a-64ce-4e15-9471-dff5285f1878',
+        'f1c0158e-c2fa-44f5-beba-3af2eefd2bd',
+        'f47bdbba-070e-49d3-b387-32a13bc258a9',
+      ])
       .order('created_at')
       .limit(5)
       .then(({ data, error }) => {

@@ -24,8 +24,8 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
         return 'Latest Recipes ';
       case FeaturedRecipes.TRENDING:
         return 'Trending Recipes';
-      case FeaturedRecipes.BREAKFAST:
-        return 'Breakfast';
+      case FeaturedRecipes.FESTIVE:
+        return 'Festive';
     }
   }, [type]);
 
