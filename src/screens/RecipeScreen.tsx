@@ -109,9 +109,13 @@ const RecipeScreen: React.FC = () => {
     goBack();
   }, [goBack]);
 
+  const handleNoAccess = useCallback(() => {
+    setAuthModalVisible(true);
+  }, []);
+
   const handleSave = useCallback(async () => {
     if (!session) {
-      setAuthModalVisible(true);
+      handleNoAccess();
     } else {
       if (isSaved) {
         supabase
@@ -211,7 +215,7 @@ const RecipeScreen: React.FC = () => {
           </Body>
         </Div>
 
-        {recipe.video ? (
+        {session && recipe.video ? (
           <Div mt={14} px={20} pt={14} pb={24} bg="light" shadow="md" shadowColor="dark5">
             <Div flex={1} position="relative">
               {isVideoLoading ? (
@@ -245,71 +249,136 @@ const RecipeScreen: React.FC = () => {
           </Div>
         ) : null}
 
-        <Div mt={16} mx={20}>
-          <Heading2 fontWeight="700">Ingredients</Heading2>
-          <Div mt={4}>
-            {recipe?.ingredients?.ingredients && fullRecipe?.ingredients?.ingredients.length > 0
-              ? fullRecipe?.ingredients?.ingredients.map((ingredient, i) => {
-                  return (
-                    <Div
-                      key={i}
-                      borderBottomColor="light4"
-                      borderBottomWidth={i == fullRecipe.ingredients.ingredients.length - 1 ? 0 : 1}
-                      row
-                      w="100%"
-                      justifyContent="space-between"
-                    >
-                      <Body py={8}>{ingredient.item}</Body>
-                      <Body py={8}>{ingredient.quantity}</Body>
-                    </Div>
-                  );
-                })
-              : null}
-          </Div>
-        </Div>
+        {session ? (
+          <>
+            <Div mt={16} mx={20}>
+              <Heading2 fontWeight="700">Ingredients</Heading2>
+              <Div mt={4}>
+                {recipe?.ingredients?.ingredients && fullRecipe?.ingredients?.ingredients.length > 0
+                  ? fullRecipe?.ingredients?.ingredients.map((ingredient, i) => {
+                      return (
+                        <Div
+                          key={i}
+                          borderBottomColor="light4"
+                          borderBottomWidth={
+                            i == fullRecipe.ingredients.ingredients.length - 1 ? 0 : 1
+                          }
+                          row
+                          w="100%"
+                          justifyContent="space-between"
+                        >
+                          <Body py={8}>{ingredient.item}</Body>
+                          <Body py={8}>{ingredient.quantity}</Body>
+                        </Div>
+                      );
+                    })
+                  : null}
+              </Div>
+            </Div>
 
-        <Div mt={30} mx={20}>
-          <Heading2 fontWeight="700">Directions</Heading2>
-          <Div mt={4}>
-            {recipe?.instructions?.steps && fullRecipe?.instructions?.steps.length > 0
-              ? fullRecipe?.instructions?.steps.map((step, i) => {
-                  return (
-                    <Div
-                      key={i}
-                      borderBottomColor="light4"
-                      borderBottomWidth={i == fullRecipe.instructions.steps.length - 1 ? 0 : 1}
-                      row
-                      w="100%"
-                      alignItems="flex-start"
-                    >
-                      <Div
-                        position="relative"
-                        rounded="circle"
-                        bg="dark"
-                        p={14}
-                        position="relative"
-                        justifyContent="center"
-                        alignItems="center"
-                        mt={14}
-                        mr={10}
-                      >
-                        <SmallHighlight position="absolute" p={0} color="light">
-                          {i + 1}
-                        </SmallHighlight>
-                      </Div>
-                      <Body flex={1} py={8}>
-                        {step}
-                      </Body>
-                    </Div>
-                  );
-                })
-              : null}
-          </Div>
-        </Div>
+            <Div mt={30} mx={20}>
+              <Heading2 fontWeight="700">Directions</Heading2>
+              <Div mt={4}>
+                {recipe?.instructions?.steps && fullRecipe?.instructions?.steps.length > 0
+                  ? fullRecipe?.instructions?.steps.map((step, i) => {
+                      return (
+                        <Div
+                          key={i}
+                          borderBottomColor="light4"
+                          borderBottomWidth={i == fullRecipe.instructions.steps.length - 1 ? 0 : 1}
+                          row
+                          w="100%"
+                          alignItems="flex-start"
+                        >
+                          <Div
+                            position="relative"
+                            rounded="circle"
+                            bg="dark"
+                            p={14}
+                            position="relative"
+                            justifyContent="center"
+                            alignItems="center"
+                            mt={14}
+                            mr={10}
+                          >
+                            <SmallHighlight position="absolute" p={0} color="light">
+                              {i + 1}
+                            </SmallHighlight>
+                          </Div>
+                          <Body flex={1} py={8}>
+                            {step}
+                          </Body>
+                        </Div>
+                      );
+                    })
+                  : null}
+              </Div>
+            </Div>
 
-        {fullRecipe && comments ? (
-          <CommentsSection recipeId={recipe.id} comments={comments} refresh={fetchFullRecipeData} />
-        ) : null}
+            {fullRecipe && comments ? (
+              <CommentsSection
+                recipeId={recipe.id}
+                comments={comments}
+                refresh={fetchFullRecipeData}
+              />
+            ) : null}
+          </>
+        ) : (
+          <Div>
+            <MagnusButton
+              px={18}
+              py={8}
+              mt={24}
+              bg="transparent"
+              onPress={handleNoAccess}
+              justifyContent="space-between"
+            >
+              <Heading2 flex={1} fontWeight="700">
+                Video
+              </Heading2>
+              <Icon name="chevron-down" fontFamily="Feather" color="text4" fontSize="4xl" />
+            </MagnusButton>
+            <MagnusButton
+              px={18}
+              py={8}
+              mt={12}
+              bg="transparent"
+              onPress={handleNoAccess}
+              justifyContent="space-between"
+            >
+              <Heading2 flex={1} fontWeight="700">
+                Ingredients
+              </Heading2>
+              <Icon name="chevron-down" fontFamily="Feather" color="text4" fontSize="4xl" />
+            </MagnusButton>
+            <MagnusButton
+              px={18}
+              py={8}
+              mt={12}
+              bg="transparent"
+              onPress={handleNoAccess}
+              justifyContent="space-between"
+            >
+              <Heading2 flex={1} fontWeight="700">
+                Directions
+              </Heading2>
+              <Icon name="chevron-down" fontFamily="Feather" color="text4" fontSize="4xl" />
+            </MagnusButton>
+            <MagnusButton
+              px={18}
+              py={8}
+              mt={12}
+              bg="transparent"
+              onPress={handleNoAccess}
+              justifyContent="space-between"
+            >
+              <Heading2 flex={1} fontWeight="700">
+                Comments
+              </Heading2>
+              <Icon name="chevron-down" fontFamily="Feather" color="text4" fontSize="4xl" />
+            </MagnusButton>
+          </Div>
+        )}
         <Div h={50} />
       </Div>
     </ScrollDiv>

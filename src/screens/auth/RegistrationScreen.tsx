@@ -82,6 +82,8 @@ export const RegistrationScreen: React.FC = () => {
           last_name: data.lastName,
         });
 
+        console.log('[Log] error2, resData2', { error2, resData2 });
+
         globalSnackbarRef.current?.show('Please check your email for verification', { bg: 'main' });
         setIsLoading(false);
 
