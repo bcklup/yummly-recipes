@@ -72,33 +72,46 @@ export const RegistrationScreen: React.FC = () => {
       });
       // console.log('[Log] error, resData', { error, resData });
 
-      if (resData.session && !error) {
-        setSession(resData.session);
+      console.log('[Log] resData', { resData });
 
+      if (resData.user && !error) {
         // handle update user data
         const { error: error2, data: resData2 } = await supabase.from('profiles').insert({
-          user_id: resData?.session.user.id,
+          user_id: resData?.user.id,
           first_name: data.firstName,
           last_name: data.lastName,
         });
+
+        globalSnackbarRef.current?.show('Please check your email for verification', { bg: 'main' });
+        setIsLoading(false);
+
+        navigation.dispatch(StackActions.replace(routes.auth.login));
+
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{ name: routes.auth.getStarted }],
+        //   }),
+        // );
+
         // console.log('[Log] error2, resData2', { error2, resData2 });
 
-        const { data: profileData, error: profileError } = await supabase
-          .from('profiles')
-          .select()
-          .eq('user_id', resData.session.user.id);
+        // const { data: profileData, error: profileError } = await supabase
+        //   .from('profiles')
+        //   .select()
+        //   .eq('user_id', resData.session.user.id);
 
-        // console.log('[Log] profileData, profileError', { profileData, profileError });
+        // // console.log('[Log] profileData, profileError', { profileData, profileError });
 
-        setProfile(!profileError && profileData ? profileData[0] : null);
+        // setProfile(!profileError && profileData ? profileData[0] : null);
 
-        setIsLoading(false);
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: routes.root }],
-          }),
-        );
+        // setIsLoading(false);
+        // navigation.dispatch(
+        //   CommonActions.reset({
+        //     index: 0,
+        //     routes: [{ name: routes.root }],
+        //   }),
+        // );
       } else {
         setIsLoading(false);
         globalSnackbarRef.current?.show(error?.message || 'Login failed. Please try again');
