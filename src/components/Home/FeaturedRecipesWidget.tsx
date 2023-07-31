@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { Div, ScrollDiv } from 'react-native-magnus';
 import { FeaturedRecipes, useFeaturedRecipes } from '../../hooks/recipes.hooks';
 import { Body, Heading2 } from '../../theme/Typography';
@@ -47,11 +47,11 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
     }
 
     return (
-      <ScrollDiv
+      <ScrollView
         horizontal
-        mt={14}
+        scrollEnabled
+        style={{ paddingHorizontal: 24, marginTop: 14 }}
         showsHorizontalScrollIndicator={false}
-        pl={24}
         // decelerationRate="fast"
         // snapToAlignment="start"
         // scrollEventThrottle={16}
@@ -62,7 +62,7 @@ const FeaturedRecipesWidget: React.FC<Props> = ({ type }) => {
         {recipes.map((recipe, i) => (
           <VerticalRecipeCard recipe={recipe} key={i} />
         ))}
-      </ScrollDiv>
+      </ScrollView>
     );
   }, [recipes, isLoading]);
 

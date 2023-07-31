@@ -88,12 +88,13 @@ export const useFeaturedRecipes = (type: FeaturedRecipes) => {
       .select('*, saved(count)')
       .in('id', [
         '5b4bac8a-64ce-4e15-9471-dff5285f1878',
-        'f1c0158e-c2fa-44f5-beba-3af2eefd2bd',
-        'f47bdbba-070e-49d3-b387-32a13bc258a9',
+        // 'f1c0158e-c2fa-44f5-beba-3af2eefd2bd',
+        // 'f47bdbba-070e-49d3-b387-32a13bc258a9',
       ])
       .order('created_at')
       .limit(5)
       .then(({ data, error }) => {
+        console.log('[Log] error, data', { error, data });
         if (error || data.length <= 0) {
           setRecipes([]);
         } else {

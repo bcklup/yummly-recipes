@@ -56,7 +56,7 @@ const SavedRecipesScreen: React.FC<Props> = () => {
     }
 
     return (
-      <ScrollDiv flex={1} bg="light1">
+      <ScrollDiv scrollEnabled flex={1} bg="light1">
         {recipes.map((recipe, i) => (
           <HorizontalRecipeCard recipe={recipe} key={i} />
         ))}

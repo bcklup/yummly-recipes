@@ -59,7 +59,7 @@ const SearchRecipeScreen: React.FC = () => {
   return (
     <ScrollDiv
       flex={1}
-      scrollEnabled={false}
+      scrollEnabled
       contentContainerStyle={{ flexGrow: 1 }}
       keyboardShouldPersistTaps="handled"
     >
