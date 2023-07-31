@@ -56,7 +56,7 @@ const HomeScreen: React.FC = () => {
 
       <FeaturedRecipesWidget type={FeaturedRecipes.LATEST} />
       <FeaturedRecipesWidget type={FeaturedRecipes.TRENDING} />
-      <FeaturedRecipesWidget type={FeaturedRecipes.FESTIVE} />
+      {/* <FeaturedRecipesWidget type={FeaturedRecipes.FESTIVE} /> */}
       <ShortcutWidget />
       <Div h={50} />
     </ScrollDiv>
