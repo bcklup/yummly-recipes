@@ -197,7 +197,12 @@ const CommentsSection: React.FC<Props> = ({ recipeId, comments, refresh }) => {
           />
         </Div>
         <Div>
-          <Div row justifyContent="flex-end">
+          {commentText && commentText.length > 25 ? (
+            <Paragraph textAlign="right" color="text5">
+              {commentText.length || 0}/250
+            </Paragraph>
+          ) : null}
+          <Div row justifyContent="flex-end" alignItems="center">
             <Button
               w="40%"
               bg="main"
