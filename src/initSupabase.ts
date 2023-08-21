@@ -17,16 +17,12 @@ export const ExpoSecureStoreAdapter = {
 };
 
 // Better put your these secret keys in .env file
-export const supabase = createClient<Database>(
-  '',
-  '',
-  {
-    auth: {
-      storage: ExpoSecureStoreAdapter as any,
-      storageKey: 'supabase-store',
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: false, // Prevents Supabase from evaluating window.location.href, breaking mobile
-    },
+export const supabase = createClient<Database>('', '', {
+  auth: {
+    storage: ExpoSecureStoreAdapter as any,
+    storageKey: 'supabase-store',
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false, // Prevents Supabase from evaluating window.location.href, breaking mobile
   },
-);
+});
